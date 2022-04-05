@@ -21,6 +21,7 @@ out/
 pkg/
 project/
 spec/status_persistence.txt
+spec/first_status_persistence.txt
 target/
 tmp/
 ~*
