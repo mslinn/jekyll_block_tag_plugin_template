@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in jekyll_time_since.gemspec
+# Specify your gem's dependencies in jekyll_plugin_template.gemspec
 gemspec
 
 gem "bundler", require: false

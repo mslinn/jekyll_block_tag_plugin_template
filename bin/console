@@ -5,7 +5,7 @@
 require "fileutils"
 require "bundler/setup"
 
-gemspec_name = "jekyll_time_since.gemspec"
+gemspec_name = "jekyll_plugin_template.gemspec"
 lines = File.readlines(gemspec_name, :chomp => true)
 if lines.find { |line| line.match?(/homepage *= *"TODO/) }
   abort <<~END_ERR

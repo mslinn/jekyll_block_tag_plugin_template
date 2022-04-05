@@ -8,7 +8,7 @@ require "os"
 require "tty-prompt"
 require "git"
 
-module JekyllTimeSinceModule
+module JekyllPluginTemplateModule
   class ScriptHelper
     def initialize
       @prompt = TTY::Prompt.new
@@ -43,7 +43,7 @@ module JekyllTimeSinceModule
     def initialize(work_dir = Dir.pwd)
       super()
       Dir.chdir(work_dir)
-      @old_name = "jekyll_time_since"
+      @old_name = "jekyll_plugin_template"
     end
 
     def create_repo
@@ -168,7 +168,7 @@ module JekyllTimeSinceModule
     def process
       Dir.chdir `git rev-parse --show-toplevel`.chomp
 
-      @new_name = obtain_new_name("jekyll_time_since")
+      @new_name = obtain_new_name("jekyll_plugin_template")
       rename_directories(@old_name, @new_name)
       rename_files(@old_name, @new_name)
       rename_identifiers(@old_name, @new_name)
@@ -256,10 +256,10 @@ if __FILE__ == $PROGRAM_NAME
     project_root = Pathname.new(__dir__).parent.to_s
     puts "Executing from #{project_root}".cyan
 
-    include JekyllTimeSinceModule
+    include JekyllPluginTemplateModule
 
     run_this_first = RunThisFirst.new(project_root)
-    old_name = "jekyll_time_since"
+    old_name = "jekyll_plugin_template"
     new_name = run_this_first.obtain_new_name(old_name)
 
     run_this_first.rename_identifiers(old_name, new_name)

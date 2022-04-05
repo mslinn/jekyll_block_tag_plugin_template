@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jekyll_time_since (0.1.0)
+    jekyll_plugin_template (0.1.2)
       git
       jekyll (>= 3.5.0)
       jekyll_plugin_logger
@@ -134,7 +134,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   debase
-  jekyll_time_since!
+  jekyll_plugin_template!
   rake
   rspec
   rubocop (= 1.18.0)

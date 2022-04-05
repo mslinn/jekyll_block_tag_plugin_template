@@ -5,7 +5,7 @@ require "fileutils"
 require "key_value_parser"
 require "shellwords"
 
-require_relative "../lib/jekyll_time_since"
+require_relative "../lib/jekyll_plugin_template"
 
 Jekyll.logger.log_level = :info
 
