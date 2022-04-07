@@ -1,0 +1,17 @@
+#!/bin/bash
+
+bundle exec rdebug-ide \
+  --host 0.0.0.0 \
+  --port 1234 \
+  --dispatcher-port 26162 \
+  -- \
+    /usr/local/bin/jekyll serve \
+      --livereload_port 35721 \
+      --force_polling \
+      --host 0.0.0.0 \
+      --port 4444 \
+      --future \
+      --incremental \
+      --livereload \
+      --drafts \
+      --unpublished
