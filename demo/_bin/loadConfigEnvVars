@@ -1,0 +1,74 @@
+#!/bin/bash
+#
+# Author: Mike Slinn
+#
+# Defines the following configuration environment variables when sourced by a bash script:
+# AWS_ACCOUNT_ID, AWS_CLOUDFRONT_DIST_ID, AWS_REGION, DOMAIN, LAMBDA_ARN, LAMBDA_IAM_ROLE_ARN, LAMBDA_IAM_ROLE_NAME, LAMBDA_HANDLER, LAMBDA_NAME, LAMBDA_RUNTIME, LAMBDA_ZIP, LAMBDA_PACKAGE_DIR, TITLE and URL
+#
+# SPDX-License-Identifier: Apache-2.0
+
+function assertEnvVarSet {
+  if [ ! -v "$1" ]; then
+    echo "Error: no environment variable called $1 is defined"
+    return 1
+  fi
+  return 0
+}
+
+function lookupEnvVar {
+  assertEnvVarSet "$(readYaml $1)" || { return 1; }
+  eval echo -e "\$$(readYaml $1)"
+}
+
+function readYaml {
+  # $1 - path
+  yq eval ".$1" _config.yml
+}
+
+function writeYaml {
+  # $1 - path
+  # $2 - value
+  yq eval ".$1 = $2" -i _config.yml
+}
+
+if [ -z "$( which yq )" ] || [[ "$( yq -V )" != *4.* ]]; then
+  VERSION=v4.2.0
+  BINARY=yq_linux_amd64
+  echo "Installing yq"
+  # See https://mikefarah.gitbook.io/yq/
+  sudo -iH bash <<EOF
+  wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - |\
+    tar xz && mv ${BINARY} /usr/bin/yq
+EOF
+fi
+
+# AWS modifiable values
+export GATEWAY_STAGE="$(          readYaml aws.apiGateway.stage          )"
+
+# AWS computed values
+export AWS_ACCOUNT_ID="$(         readYaml aws.accountId                 )"
+export AWS_CLOUDFRONT_DIST_ID="$( readYaml aws.cloudfront.distributionId )"
+export AWS_REGION="$(             readYaml aws.region                    )"
+export GATEWAY_ENDPOINT="$(       readYaml aws.apiGateway.endpoint       )"
+export GATEWAY_REST_API_ID="$(    readYaml aws.apiGateway.restId         )"
+export GATEWAY_RESOURCE_ID="$(    readYaml aws.apiGateway.resourceId )"
+export GATEWAY_ROOT_ID="$(        readYaml aws.apiGateway.rootResourceId )"
+export GATEWAY_NAME="$(           readYaml aws.apiGateway.name           )"
+
+# Computed AWS Lambda values
+export LAMBDA_ARN="$(           readYaml aws.lambda.addSubscriber.computed.arn        )"
+export LAMBDA_IAM_ROLE_ARN="$(  readYaml aws.lambda.addSubscriber.computed.iamRoleArn )"
+
+# Modifiable AWS Lambda values
+export LAMBDA_HANDLER="$(       readYaml aws.lambda.addSubscriber.custom.handler      )"
+export LAMBDA_IAM_ROLE_NAME="$( readYaml aws.lambda.addSubscriber.custom.iamRoleName  )"
+export LAMBDA_NAME="$(          readYaml aws.lambda.addSubscriber.custom.name         )"
+export LAMBDA_RUNTIME="$(       readYaml aws.lambda.addSubscriber.custom.runtime      )"
+
+export LAMBDA_PACKAGE_DIR="${GIT_ROOT}/_package"
+export LAMBDA_ZIP="${LAMBDA_PACKAGE_DIR}/function.zip"
+
+# Misc modifiable values
+export TITLE="$( readYaml title )"
+export URL="$( readYaml url )"
+export DOMAIN="$( echo "$URL" | sed -n -e 's,^https\?://,,p' )"

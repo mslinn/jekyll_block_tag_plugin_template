@@ -61,11 +61,13 @@ module Jekyll
       @mode = @config["env"]["JEKYLL_ENV"]
       @page = context.registers[:page]
 
-      @logger.debug <<~HEREDOC
-        mode="#{@mode}"
-        page.path="#{@page.path}"
-        page.url="#{@page.url}"
-      HEREDOC
+      @logger.debug {
+        <<~HEREDOC
+          mode="#{@mode}"
+        HEREDOC
+        #   page.path="#{@page.path}"
+        #   page.url="#{@page.url}"
+      }
 
       # Compute the return value of this Jekyll tag
       <<~HEREDOC

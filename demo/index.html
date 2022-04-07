@@ -1,0 +1,19 @@
+---
+description: Jekyll Plugin Template Demonstration
+layout: default
+subtitle: Demonstration
+title-override: Jekyll Plugin Template Demonstration
+---
+<p>
+  Given this markup in an HTML file:
+</p>
+<pre>{% raw %}{% block_tag_template param1="Today is a wonderful day!" %}
+Hello, world!
+{% endblock_tag_template %}{% endraw %}</pre>
+
+<p>
+  The rendered HTML from the block tag looks like this:
+</p>
+{% block_tag_template param1="Today is a wonderful day!" %}
+Hello, world!
+{% endblock_tag_template %}

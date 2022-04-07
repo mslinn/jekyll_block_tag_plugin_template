@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir[".rubocop.yml", "LICENSE.*", "Rakefile", "{lib,spec}/**/*", "*.gemspec", "*.md"]
 
   spec.homepage = "https://www.mslinn.com/blog/2020/12/30/jekyll-plugin-template-collection.html"
-  spec.license = "MIT"
+  spec.license = "CC0-1.0"
   spec.metadata = {
     "allowed_push_host" => "https://rubygems.org",
     "bug_tracker_uri"   => "#{github}/issues",

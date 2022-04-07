@@ -10,11 +10,14 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.6
 
-Layout/LineLength:
-  Max: 150
+Jekyll/NoPutsAllowed:
+  Enabled: false
 
 # Gemspec/RequireMFA:
 #   Enabled: false
 
-Jekyll/NoPutsAllowed:
+Layout/LineLength:
+  Max: 150
+
+Style/StringLiterals:
   Enabled: false
