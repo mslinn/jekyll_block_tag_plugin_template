@@ -12,6 +12,7 @@
 .bundle/
 .idea
 .idea*
+.jekyll-cache/
 .yardoc
 .yardoc/
 /spec/reports/

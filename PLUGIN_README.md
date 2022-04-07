@@ -30,6 +30,8 @@ then launches the demo Jekyll website under control of the Ruby Fast Debugger.
 As described in [Debugging Jekyll Plugins with an IDE](https://www.mslinn.com/blog/2022/02/21/jekyll-debugging.html),
 attach to the process using `ruby-debug-ide` by selecting the **Run / Debug** configuration called **Attach rdebug-ide**.
 
+![Demo screen shot](demo.png)
+
 
 ## Additional Information
 More information is available on Mike Slinn's web site about
