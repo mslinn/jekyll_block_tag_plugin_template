@@ -33,6 +33,20 @@ attach to the process using `ruby-debug-ide` by selecting the **Run / Debug** co
 ![Demo screen shot](demo.png)
 
 
+## Debugging
+Run `bin/attach` and pass it the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
+The `demo` subdirectory fits this description.
+```script
+$ bin/attach demo
+Successfully uninstalled jekyll_plugin_template-0.1.2
+jekyll_plugin_template 0.1.2 built to pkg/jekyll_plugin_template-0.1.2.gem.
+jekyll_plugin_template (0.1.2) installed.
+Fast Debugger (ruby-debug-ide 0.7.3, debase 0.2.4.1, file filtering is supported) listens on 0.0.0.0:1234
+```
+Now attach to the debugger process.
+This git repo includes a Visual Studio Code launcher for this purpose labeled `Attach rdebug-ide`.
+
+
 ## Additional Information
 More information is available on Mike Slinn's web site about
 [Jekyll plugins](https://www.mslinn.com/blog/index.html#Jekyll).

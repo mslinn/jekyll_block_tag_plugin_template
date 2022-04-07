@@ -34,12 +34,11 @@ liquid:
 plugin_loggers:
   PluginMetaLogger: info
   CleanHook: info
-  DocumentHooks: warn
+  DocumentHooks: info
   MyBlock: info
-  PageHooks: warn
-  PostHooks: warn
-  PluginMetaLogger: info
-  SiteHooks: info
+  PageHooks: info
+  PostHooks: info
+  SiteHooks: warn
 permalink: /blog/:year/:month/:day/:title:output_ext
 plugin-vars:
   django-github: 'https://github.com/django/django/blob/3.1.7'
