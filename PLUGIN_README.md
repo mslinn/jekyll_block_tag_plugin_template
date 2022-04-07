@@ -17,13 +17,27 @@ The plugin is packaged as a Ruby gem.
    ```
 
 
+## Demo
+The `demo` directory contains a small Jekyll website pre-configured for instant gratification.
+Run the demo by typing:
+```shell
+$ bin/attach demo
+```
+
+The `bin/attach` script builds the plugin locally and installs it locally,
+then launches the demo Jekyll website under control of the Ruby Fast Debugger.
+
+As described in [Debugging Jekyll Plugins with an IDE](https://www.mslinn.com/blog/2022/02/21/jekyll-debugging.html),
+attach to the process using `ruby-debug-ide` by selecting the **Run / Debug** configuration called **Attach rdebug-ide**.
+
+
 ## Additional Information
 More information is available on Mike Slinn's web site about
 [Jekyll plugins](https://www.mslinn.com/blog/index.html#Jekyll).
 
 
 ## Installation
-
+This has already been done for the demo; these instructions are for incorporating the plugin(s) into other Jekyll websites.
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -79,7 +93,7 @@ jekyll_plugin_template (0.1.0)
     License: MIT
     Installed at: /home/mslinn/.gems
 
-    Write a short summary, because RubyGems requires one.
+    Write a short summary; RubyGems requires one.
 ```
 
 
