@@ -1,6 +1,25 @@
 # frozen_string_literal: true
 
 module Dumpers
+  # See https://github.com/jekyll/jekyll/blob/master/lib/jekyll/collection.rb
+  #   attr_reader :site, :label, :metadata
+  #   attr_writer :docs
+  #   Metadata is a hash with at least these keys: output[Boolean], permalink[String]
+  #   selected methods: collection_dir, directory, entries, exists?, files, filtered_entries, relative_directory
+  def collection_as_string(collection, indent_spaces)
+    indent = " " * indent_spaces
+    result = <<~END_COLLECTION
+      '#{collection.label}' collection within '#{collection.relative_directory}' subdirectory
+        #{indent}Directory: #{collection.directory}
+        #{indent}Does the directory exist and is it not a symlink if in safe mode? #{collection.exists?}
+        #{indent}Collection_dir: #{collection.collection_dir}
+        #{indent}Metadata: #{collection.metadata}
+        #{indent}Static files: #{collection.files}
+        #{indent}Filtered entries: #{collection.filtered_entries}
+    END_COLLECTION
+    result.chomp
+  end
+
   # @param msg[String]
   # @param document[Jekyll:Document] https://github.com/jekyll/jekyll/blob/master/lib/jekyll/document.rb
   #   attr_reader :path, :extname, :collection, :type; :site is too big to dump here, we already have it anyway
@@ -11,7 +30,7 @@ module Dumpers
       <<~END_DOC
         #{msg}\n  page:
         #{attributes.join("\n")}
-            collection = document.collection.map { |collection| collection }
+            collection = #{Dumpers.collection_as_string(document.collection, 4)}
             content not dumped because it would likely be too long
             site not dumped also
       END_DOC
@@ -116,5 +135,5 @@ module Dumpers
     attrs.map { |attr| "    #{attr.to_s.delete_prefix("@")} = #{object.instance_variable_get(attr)}" }
   end
 
-  module_function :attributes_as_string, :dump_document, :dump_page, :dump_payload, :dump_site
+  module_function :attributes_as_string, :collection_as_string, :dump_document, :dump_page, :dump_payload, :dump_site
 end
