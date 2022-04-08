@@ -2,12 +2,27 @@
 
 module Dumpers
   # @param msg[String]
+  # @param document[Jekyll:Document] https://github.com/jekyll/jekyll/blob/master/lib/jekyll/document.rb
+  #   attr_reader :path, :extname, :collection, :type; :site is too big to dump here, we already have it anyway
+  #   attr_accessor :content, :output
+  def dump_document(logger, msg, document)
+    attributes = Dumpers.attributes_as_string(document, [:@path, :@extname, :@collection, :@type])
+    logger.info do
+      <<~END_DOC
+        #{msg}\n  page:
+        #{attributes.join("\n")}
+            content not dumped because it would likely be too long
+            site not dumped also
+      END_DOC
+    end
+  end
+
+  # @param msg[String]
   # @param page[Jekyll:Page] https://github.com/jekyll/jekyll/blob/master/lib/jekyll/page.rb
   #   attr_writer :dir
   #   attr_accessor :basename, :content, :data, :ext, :name, :output, :pager, :site
   def dump_page(logger, msg, page)
-    attrs = [:@basename, :@ext, :@name, :@output, :@pager]
-    attributes = attrs.map { |attr| "    #{attr.to_s.delete_prefix("@")} = #{page.instance_variable_get(attr)}" }
+    attributes = Dumpers.attributes_as_string(page, [:@basename, :@ext, :@name, :@output, :@pager])
     # site = page.site available if you need it
     data = page.data.map { |k, v| "    #{k} = #{v}" }
     logger.info do
@@ -50,7 +65,7 @@ module Dumpers
   #     :unpublished
   #   attr_reader :cache_dir, :config, :dest, :filter_cache, :includes_load_paths,
   #     :liquid_renderer, :profiler, :regenerator, :source
-  def dump_site(logger, msg, site) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
+  def dump_site(logger, msg, site) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
     logger.info do
       <<~END_INFO
         #{msg} site
@@ -96,5 +111,9 @@ module Dumpers
     site.tags.sort.each { |key, value| logger.info { "site.tags.#{key} = '#{value}'" } }
   end
 
-  module_function :dump_page, :dump_payload, :dump_site
+  def attributes_as_string(object, attrs)
+    attrs.map { |attr| "    #{attr.to_s.delete_prefix("@")} = #{object.instance_variable_get(attr)}" }
+  end
+
+  module_function :attributes_as_string, :dump_document, :dump_page, :dump_payload, :dump_site
 end
