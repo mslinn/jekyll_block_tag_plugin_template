@@ -131,9 +131,11 @@ module JekyllPluginHooks
   #   categories, description, last_modified_at, tags, title, and slug;
   # other document attributes that are not yet ready when this hook is invoked include
   # excerpt and ext (file extension).
+  # The collection attribute will be set properly for this hook.
   Jekyll::Hooks.register(:documents, :post_init, :priority => :normal) do |document|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_init) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_init)", document)
+    "stop"
   end
 
   # Called just before rendering a document.
