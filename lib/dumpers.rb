@@ -20,59 +20,81 @@ module Dumpers
     result.chomp
   end
 
+  def count_lines(string)
+    return string.split("\n").length if string
+
+    0
+  end
+
   # @param msg[String]
   # @param document[Jekyll:Document] https://github.com/jekyll/jekyll/blob/master/lib/jekyll/document.rb
   #   attr_reader :path, :extname, :collection, :type; :site is too big to dump here, we already have it anyway
-  #   attr_accessor :content, :output
+  #   Selected methods: date
   def dump_document(logger, msg, document)
-    attributes = Dumpers.attributes_as_string(document, [:@path, :@extname, :@type])
+    attributes = attributes_as_string(document, [:@path, :@extname, :@type])
+    data = document.data.map { |k, v| "    #{k} = #{v}" }
     logger.info do
       <<~END_DOC
-        #{msg}\n  page:
+        #{msg}
+          document dated #{document.date.to_date}:
+            relative_path: #{document.relative_path}:
         #{attributes.join("\n")}
-            collection = #{Dumpers.collection_as_string(document.collection, 4)}
+            Is it a draft? #{document.draft?}
+            collection = #{collection_as_string(document.collection, 4)}
             content not dumped because it would likely be too long
             site not dumped also
+            data:
+          #{data.join("\n  ").rstrip.chomp}
       END_DOC
     end
   end
 
   # @param msg[String]
   # @param page[Jekyll:Page] https://github.com/jekyll/jekyll/blob/master/lib/jekyll/page.rb
-  #   attr_writer :dir
   #   attr_accessor :basename, :content, :data, :ext, :name, :output, :pager, :site
+  #   Selected methods: dir, excerpt, path, permalink, url
   def dump_page(logger, msg, page)
-    attributes = Dumpers.attributes_as_string(page, [:@basename, :@ext, :@name, :@output, :@pager])
+    attributes = attributes_as_string(page, [:@basename, :@ext, :@name])
     # site = page.site available if you need it
     data = page.data.map { |k, v| "    #{k} = #{v}" }
     logger.info do
       <<~END_PAGE
-        #{msg}\n  page:
+        #{msg}\n  page at #{page.dir}:
         #{attributes.join("\n")}
+            Is it HTML? #{page.html?}; is it an index? #{page.index?}
+            Permalink: #{page.permalink}
+            URL: #{page.url}
             content not dumped because it would likely be too long
             site not dumped also
+            Excerpt: "#{page.excerpt}"
           data:
         #{data.join("\n")}
       END_PAGE
     end
   end
 
-  # Typical output:
-  #   INFO SiteHooks: Jekyll::Hooks.register(:site, :pre_render) payload =
-  #     content =
-  #     paginator =
-  #     jekyll = Jekyll::Drops::JekyllDrop
-  #     layout =
-  #     site = Jekyll::Drops::SiteDrop
-  #     highlighter_prefix =
-  #     page =
-  #     highlighter_suffix =
-  #
   # @param msg[String]
-  # @param payload[Jekyll::UnifiedPayloadDrop]
+  # @param payload[Jekyll::Drops::UnifiedPayloadDrop] See https://github.com/jekyll/jekyll/blob/master/lib/jekyll/drops/unified_payload_drop.rb
+  #    This is a mutable class.
+  #    attr_accessor :content, :page, :layout, :paginator, :highlighter_prefix, :highlighter_suffix
+  # payload.page is a Jekyll::Drops::DocumentDrop, which contains this payload,
+  # see https://github.com/jekyll/jekyll/blob/master/lib/jekyll/drops/document_drop.rb
   def dump_payload(logger, msg, payload)
-    x = payload.map { |k, v| "  #{k} = #{v}" }
-    logger.info { "#{msg} payload = \n" + x.join("\n") }
+    result = <<~END_INFO
+      #{msg} payload:
+        content contains #{count_lines(payload.content)} lines.#{first_5_lines(payload.content)}
+        layout = #{payload.layout}
+        highlighter_prefix = #{payload.highlighter_prefix}
+        paginator and site not dumped.
+    END_INFO
+    logger.info { result.chomp }
+  end
+
+  def first_5_lines(string)
+    lines = string ? string.split("\n")[0..4] : []
+    return "\n    first 5 lines:\n    #{lines.join("\n    ")}\n" if lines.length.positive?
+
+    ""
   end
 
   # @param msg[String]
@@ -135,5 +157,6 @@ module Dumpers
     attrs.map { |attr| "    #{attr.to_s.delete_prefix("@")} = #{object.instance_variable_get(attr)}" }
   end
 
-  module_function :attributes_as_string, :collection_as_string, :dump_document, :dump_page, :dump_payload, :dump_site
+  module_function :attributes_as_string, :collection_as_string, :count_lines, :dump_document, :dump_page,
+                  :dump_payload, :dump_site, :first_5_lines
 end

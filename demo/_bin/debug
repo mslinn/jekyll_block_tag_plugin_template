@@ -19,6 +19,9 @@ GIT_ROOT="$( git rev-parse --show-toplevel )"
 cd "${GIT_ROOT}/demo" || exit
 
 bundle install
+
+rm -rf _site # Ensure all the hooks get called
+
 if [ "$1" == -r ]; then
   bundle exec jekyll $run
 else

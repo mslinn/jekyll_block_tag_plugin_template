@@ -8,8 +8,6 @@ module JekyllPluginHooksName
   PLUGIN_NAME = "jekyll_plugin_hooks"
 end
 
-# This is the module-level description.
-#
 # The Jekyll log level defaults to :info, which means all the Jekyll.logger statements below will not generate output.
 # You can control the log level when you start Jekyll.
 # To set the log level to :debug, write an entery into _config.yml, like this:
@@ -99,7 +97,7 @@ module JekyllPluginHooks
   Jekyll::Hooks.register(:pages, :pre_render, :priority => :normal) do |page, payload|
     @log_pages.info { "Jekyll::Hooks.register(:pages, :pre_render) invoked." }
     Dumpers.dump_page(@log_pages, "Jekyll::Hooks.register(:pages, :pre_render)", page)
-    @log_pages.debug { Dumpers.dump_payload(@log_pages, ":pages, :pre_render payload", payload) }
+    Dumpers.dump_payload(@log_pages, ":pages, :pre_render payload", payload)
   end
 
   # Called after converting the page content, but before rendering the page layout
@@ -121,38 +119,43 @@ module JekyllPluginHooks
   end
 
   ########## :documents hooks
-  # These hooks fine-grained control over all documents in the site including posts and
+  # These hooks provide fine-grained control over all documents in the site including posts and
   # documents in user-defined collections
 
-  # Called whenever any document is initialized
+  # Called whenever any document is initialized.
+  # Front matter data will not have been assigned yet to documents when this hook is invoked, for example:
+  #   categories, description, last_modified_at, tags, title, and slug;
+  # other document attributes that are not yet ready when this hook is invoked include
+  # excerpt and ext (file extension).
   Jekyll::Hooks.register(:documents, :post_init, :priority => :normal) do |document|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_init) invoked." }
-    Dumpers.dump_document(@log_pages, "Jekyll::Hooks.register(:documents, :post_init)", document)
+    Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_init)", document)
   end
 
-  # Called just before rendering a document
+  # Called just before rendering a document.
+  # Front matter data will have been assigned when this hook is invoked.
   Jekyll::Hooks.register(:documents, :pre_render, :priority => :normal) do |document, payload|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :pre_render) invoked." }
-    @log_docs.debug { Dumpers.dump_payload(@log_docs, ":documents, :pre_render payload", payload) }
-    Dumpers.dump_document(@log_pages, "Jekyll::Hooks.register(:documents, :pre_render)", document)
+    Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :pre_render)", document)
+    Dumpers.dump_payload(@log_docs, ":documents, :pre_render payload", payload)
   end
 
   # Called after converting the document content, but before rendering the document layout
   Jekyll::Hooks.register(:documents, :post_convert, :priority => :normal) do |document|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_convert) invoked." }
-    Dumpers.dump_document(@log_pages, "Jekyll::Hooks.register(:documents, :post_convert)", document)
+    Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_convert)", document)
   end
 
   # Called after rendering a document, but before writing it to disk
   Jekyll::Hooks.register(:documents, :post_render, :priority => :normal) do |document|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_render) invoked." }
-    Dumpers.dump_document(@log_pages, "Jekyll::Hooks.register(:documents, :post_render)", document)
+    Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_render)", document)
   end
 
   # Called after writing a document to disk
   Jekyll::Hooks.register(:documents, :post_write, :priority => :normal) do |document|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_write) invoked." }
-    Dumpers.dump_document(@log_pages, "Jekyll::Hooks.register(:documents, :post_write)", document)
+    Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_write)", document)
   end
 
   ########## :posts hooks
@@ -170,7 +173,7 @@ module JekyllPluginHooks
     # post is a Jekyll::Document
     @log_posts.info { "Jekyll::Hooks.register(:posts, :pre_render) invoked." }
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :pre_render)", post)
-    @log_posts.debug { Dumpers.dump_payload(@log_posts, ":posts, :pre_render payload", payload) }
+    Dumpers.dump_payload(@log_posts, ":posts, :pre_render payload", payload)
   end
 
   # Called after converting the post content, but before rendering the post layout
