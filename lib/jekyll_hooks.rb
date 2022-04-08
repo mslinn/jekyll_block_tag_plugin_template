@@ -8,6 +8,8 @@ module JekyllPluginHooksName
   PLUGIN_NAME = "jekyll_plugin_hooks"
 end
 
+# The Jekyll processing steps are described in https://jekyllrb.com/tutorials/orderofinterpretation/
+#
 # The Jekyll log level defaults to :info, which means all the Jekyll.logger statements below will not generate output.
 # You can control the log level when you start Jekyll.
 # To set the log level to :debug, write an entery into _config.yml, like this:
@@ -50,7 +52,9 @@ module JekyllPluginHooks
     Dumpers.dump_site(@log_site, "Jekyll::Hooks.register(:site, :after_reset)", site)
   end
 
-  # Called after all source files have been read and loaded from disk
+  # Called after all source files have been read and loaded from disk.
+  # This is a good hook for enriching posts;
+  # for example, adding links to author pages or adding posts to author pages.
   Jekyll::Hooks.register(:site, :post_read, :priority => :normal) do |site|
     @log_site.info { "Jekyll::Hooks.register(:site, :post_read) invoked." }
     Dumpers.dump_site(@log_site, "Jekyll::Hooks.register(:site, :post_read)", site)
@@ -140,25 +144,31 @@ module JekyllPluginHooks
 
   # Called just before rendering a document.
   # Front matter data will have been assigned when this hook is invoked.
+  # Liquid variables are still embedded in the content.
+  # If the document contains markdown (or some other markup),
+  # it will not have been converted to HTML (or whatever the target format is) yet.
   Jekyll::Hooks.register(:documents, :pre_render, :priority => :normal) do |document, payload|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :pre_render) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :pre_render)", document)
     Dumpers.dump_payload(@log_docs, ":documents, :pre_render payload", payload)
   end
 
-  # Called after converting the document content, but before rendering the document layout
+  # Called after converting the document content to HTML (or whatever),
+  # but before rendering the document using the layout.
   Jekyll::Hooks.register(:documents, :post_convert, :priority => :normal) do |document|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_convert) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_convert)", document)
   end
 
-  # Called after rendering a document, but before writing it to disk
+  # Called after rendering a document using the layout, but before writing it to disk.
+  # This is your last chance to modify the content.
   Jekyll::Hooks.register(:documents, :post_render, :priority => :normal) do |document|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_render) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_render)", document)
   end
 
-  # Called after writing a document to disk
+  # Called after writing a document to disk.
+  # Useful for statistics regarding completed renderings.
   Jekyll::Hooks.register(:documents, :post_write, :priority => :normal) do |document|
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_write) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_write)", document)
@@ -188,7 +198,13 @@ module JekyllPluginHooks
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :post_convert)", post)
   end
 
-  # Called after rendering a post, but before writing it to disk
+  # Called after rendering a post, but before writing it to disk.
+  # This hook can be used to make edits to rendered pages,
+  # regardless of whether they were originally written in markdown or HTML.
+  # For example:
+  #   Jekyll::Hooks.register(:posts, :post_render) do |post|
+  #     post.gsub!('<img src="images/', '<img src="/cdn-cgi/image/width=80,quality=75/images/')
+  #   end
   Jekyll::Hooks.register(:posts, :post_render, :priority => :normal) do |post|
     @log_posts.info { "Jekyll::Hooks.register(:posts, :post_render) invoked." }
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :post_render)", post)
