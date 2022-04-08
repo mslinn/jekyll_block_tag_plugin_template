@@ -85,7 +85,8 @@ module JekyllPluginHooks
   end
 
   ########## :pages hooks
-  # These hooks provide fine-grained control over all pages in the site
+  # Pages are web pages that do not belong to a collection, such as posts or drafts.
+  # These hooks provide fine-grained control over all pages in the site.
 
   # Called whenever a page is initialized
   Jekyll::Hooks.register(:pages, :post_init, :priority => :normal) do |page|
@@ -119,8 +120,9 @@ module JekyllPluginHooks
   end
 
   ########## :documents hooks
-  # These hooks provide fine-grained control over all documents in the site including posts and
-  # documents in user-defined collections
+  # Documents are web pages that belong to a collection, for example posts, drafts and custom collections.
+  # These hooks provide fine-grained control over all documents in the site.
+  # If you want to inspect or process all collections in the same way, use these hooks.
 
   # Called whenever any document is initialized.
   # Front matter data will not have been assigned yet to documents when this hook is invoked, for example:
@@ -159,7 +161,7 @@ module JekyllPluginHooks
   end
 
   ########## :posts hooks
-  # These hooks provide fine-grained control over all posts in the site without affecting
+  # These hooks provide fine-grained control over all posts **and drafts** in the site without affecting
   # documents in user-defined collections
 
   # Called whenever any post is initialized
