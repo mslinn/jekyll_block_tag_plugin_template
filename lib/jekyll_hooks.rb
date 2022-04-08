@@ -123,6 +123,8 @@ module JekyllPluginHooks
   # Documents are web pages that belong to a collection, for example posts, drafts and custom collections.
   # These hooks provide fine-grained control over all documents in the site.
   # If you want to inspect or process all collections in the same way, use these hooks.
+  # If you just want to process a custom collection, use these hooks and filter out the documents
+  # that do not belong to that collection.
 
   # Called whenever any document is initialized.
   # Front matter data will not have been assigned yet to documents when this hook is invoked, for example:
