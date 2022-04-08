@@ -2,10 +2,10 @@
 
 # shellcheck disable=SC2086
 
-# dispatcher-port and dispatcher-port are arbitrarily chosen so to prevent conflicts with other instances.
+# dispatcher-port and dispatcher-port are arbitrarily chosen to prevent conflicts with other instances.
 
 run="serve \
-    --c 25721 \
+    --livereload_port 25721 \
     --force_polling \
     --host 0.0.0.0 \
     --port 4444 \
