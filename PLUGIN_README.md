@@ -32,6 +32,21 @@ attach to the process using `ruby-debug-ide` by selecting the **Run / Debug** co
 
 ![Demo screen shot](demo.png)
 
+### Control Log Verbosity
+`demo/_config.yml` contains a block of YAML that looks something like:
+```yaml
+plugin_loggers:
+  PluginMetaLogger: info
+  CleanHook: info
+  DocumentHooks: info
+  MyBlock: info
+  PageHooks: info
+  PostHooks: info
+  SiteHooks: warn
+```
+The above sets the verbosity for each of the loggers.
+Possible values are: `debug`, `info`, `warn` and `error`.
+
 
 ## Debugging
 Run `bin/attach` and pass it the directory name of a Jekyll website that has a suitable script called `_bin/debug`.
@@ -73,7 +88,32 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Given this markup in an HTML file:
+
+```
+{% block_tag_template param1="Today is a wonderful day!" %}
+Hello, world!
+{% endblock_tag_template %}
+The rendered HTML from the block tag looks like this:
+```
+
+<p style="color: green; background-color: yellow; padding: 1em; border: solid thin grey;">Hello, world! Today is a wonderful day!</p>
+
+Console output looks like this, when the plugin's log level is set to `debug`:
+```
+DEBUG MyBlock: tag_name = 'block_tag_template'
+argument_string = 'param1="Today is a wonderful day!" '
+@param1 = 'Today is a wonderful day!'
+@param_x = ''
+params =
+  param1 = Today is a wonderful day!
+  param2 =
+  param3 =
+
+DEBUG MyBlock: mode=""
+page.path="_posts/2022-03-28-jekyll-plugin-template-collection.html"
+page.url="/blog/2022/03/28/jekyll-plugin-template-collection.html"
+```
 
 
 ## Development

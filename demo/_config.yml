@@ -33,9 +33,9 @@ liquid:
   # strict_variables: true
 plugin_loggers:
   PluginMetaLogger: info
-  CleanHook: warn
+  CleanHook: info
   DocumentHooks: info
-  MyBlock: warn
+  MyBlock: info
   PageHooks: info
   PostHooks: info
   SiteHooks: warn
