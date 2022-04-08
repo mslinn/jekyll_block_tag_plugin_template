@@ -12,7 +12,6 @@ gem 'webrick'
 group :jekyll_plugins do
   gem 'classifier-reborn'
   gem 'html-proofer'
-  gem 'jekyll-admin'
   gem 'jekyll-assets'
   gem 'jekyll-environment-variables'
   gem "jekyll_plugin_logger"
