@@ -6,11 +6,12 @@ module Dumpers
   #   attr_reader :path, :extname, :collection, :type; :site is too big to dump here, we already have it anyway
   #   attr_accessor :content, :output
   def dump_document(logger, msg, document)
-    attributes = Dumpers.attributes_as_string(document, [:@path, :@extname, :@collection, :@type])
+    attributes = Dumpers.attributes_as_string(document, [:@path, :@extname, :@type])
     logger.info do
       <<~END_DOC
         #{msg}\n  page:
         #{attributes.join("\n")}
+            collection = document.collection.map { |collection| collection }
             content not dumped because it would likely be too long
             site not dumped also
       END_DOC

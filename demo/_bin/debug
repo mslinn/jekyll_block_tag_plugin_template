@@ -2,8 +2,10 @@
 
 # shellcheck disable=SC2086
 
-run="jekyll serve \
-    --livereload_port 35721 \
+# dispatcher-port and dispatcher-port are arbitrarily chosen so to prevent conflicts with other instances.
+
+run="serve \
+    --c 25721 \
     --force_polling \
     --host 0.0.0.0 \
     --port 4444 \
@@ -13,20 +15,16 @@ run="jekyll serve \
     --drafts \
     --unpublished"
 
-function debug {
-  bundle exec rdebug-ide \
-    --host 0.0.0.0 \
-    --port 1234 \
-    --dispatcher-port 26162 \
-    -- $run
-}
-
 GIT_ROOT="$( git rev-parse --show-toplevel )"
 cd "${GIT_ROOT}/demo" || exit
 
 bundle install
 if [ "$1" == -r ]; then
-  bundle exec $run
+  bundle exec jekyll $run
 else
-  debug
+  bundle exec rdebug-ide \
+    --host 0.0.0.0 \
+    --port 1234 \
+    --dispatcher-port 26162 \
+    -- /usr/local/bin/jekyll $run
 fi
