@@ -192,19 +192,21 @@ module JekyllPluginHooks
     Dumpers.dump_payload(@log_posts, ":posts, :pre_render payload", payload)
   end
 
-  # Called after converting the post content, but before rendering the post layout
+  # Called after converting the post content, but before rendering the post layout.
+  # This hook can be used to make edits to rendered pages,
+  # regardless of whether they were originally written in markdown or HTML.
+  #
+  # Changes must modify post.output, as shown in this example:
+  #   Jekyll::Hooks.register(:posts, :post_convert) do |post|
+  #     post.output.gsub!('<img src="images/', '<img src="https://my-cdn/images/')
+  #   end
   Jekyll::Hooks.register(:posts, :post_convert, :priority => :normal) do |post|
     @log_posts.info { "Jekyll::Hooks.register(:posts, :post_convert) invoked." }
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :post_convert)", post)
   end
 
   # Called after rendering a post, but before writing it to disk.
-  # This hook can be used to make edits to rendered pages,
-  # regardless of whether they were originally written in markdown or HTML.
-  # For example:
-  #   Jekyll::Hooks.register(:posts, :post_render) do |post|
-  #     post.gsub!('<img src="images/', '<img src="/cdn-cgi/image/width=80,quality=75/images/')
-  #   end
+  # Changing `post.conent` has no effect on visible output.
   Jekyll::Hooks.register(:posts, :post_render, :priority => :normal) do |post|
     @log_posts.info { "Jekyll::Hooks.register(:posts, :post_render) invoked." }
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :post_render)", post)
