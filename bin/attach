@@ -21,4 +21,5 @@ bin/build
 set -e
 
 cd "$1" > /dev/null || exit 1
+bundle exec jekyll clean
 _bin/debug

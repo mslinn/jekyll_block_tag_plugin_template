@@ -26,13 +26,24 @@ module Dumpers
     0
   end
 
+  # Calling value.to_s blows up when a Jekyll::Excerpt
+  # Error message is unrelated to the problem, makes it hard to track down
+  # Be careful when converting values to string!
+  def safe_to_s(value)
+    return value.content if value.is_a? Jekyll::Excerpt
+
+    value.to_s
+  rescue StandardError => e
+    e.message
+  end
+
   # @param msg[String]
   # @param document[Jekyll:Document] https://github.com/jekyll/jekyll/blob/master/lib/jekyll/document.rb
   #   attr_reader :path, :extname, :collection, :type; :site is too big to dump here, we already have it anyway
   #   Selected methods: date
   def dump_document(logger, msg, document)
     attributes = attributes_as_string(document, [:@path, :@extname, :@type])
-    data = document.data.map { |k, v| "    #{k} = #{v}" }
+    data = document.data.map { |k, v| "    #{k} = #{safe_to_s(v)}" }
     logger.info do
       <<~END_DOC
         #{msg}
@@ -158,5 +169,5 @@ module Dumpers
   end
 
   module_function :attributes_as_string, :collection_as_string, :count_lines, :dump_document, :dump_page,
-                  :dump_payload, :dump_site, :first_5_lines
+                  :dump_payload, :dump_site, :first_5_lines, :safe_to_s
 end
