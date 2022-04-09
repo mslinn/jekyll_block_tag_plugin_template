@@ -198,7 +198,7 @@ module JekyllPluginHooks
   #
   # Changes must modify post.output, as shown in this example:
   #   Jekyll::Hooks.register(:posts, :post_convert) do |post|
-  #     post.output.gsub!('<img src="images/', '<img src="https://my-cdn/images/')
+  #     post.output.gsub!('programming PHP', 'banging rocks together')
   #   end
   Jekyll::Hooks.register(:posts, :post_convert, :priority => :normal) do |post|
     @log_posts.info { "Jekyll::Hooks.register(:posts, :post_convert) invoked." }
