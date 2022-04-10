@@ -20,7 +20,7 @@ cd "${GIT_ROOT}/demo" || exit
 
 bundle install
 
-rm -rf _site # Ensure all the hooks get called
+bundle exec jekyll clean # Ensure all hooks get called
 
 if [ "$1" == -r ]; then
   bundle exec jekyll $run

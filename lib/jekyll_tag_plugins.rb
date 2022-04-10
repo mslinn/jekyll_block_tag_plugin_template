@@ -22,7 +22,7 @@ end
 # plugin_loggers:
 #   MyBlock: debug
 
-module Jekyll
+module JekyllTagPlugin
   # This class implements the Jekyll tag functionality
   class MyBlock < Liquid::Block
     # @param tag_name [String] the name of the tag, which we already know.
@@ -82,4 +82,4 @@ module Jekyll
 end
 
 PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllPluginTemplateVersion::VERSION} plugin." }
-Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, Jekyll::MyBlock)
+Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, JekyllTagPlugin::MyBlock)
