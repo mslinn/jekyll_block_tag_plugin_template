@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "active_support"
+require "active_support/inflector"
 require "nokogiri"
 require "talk_like_a_pirate"
 

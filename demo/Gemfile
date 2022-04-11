@@ -7,6 +7,7 @@ gem 'jekyll', '~> 4.2.2'
 gem 'nokogumbo', '=2.0.3'
 gem 'ptools'
 gem 'sprockets'
+gem 'talk_like_a_pirate', ">= 0.2.2"
 gem 'webrick'
 
 group :jekyll_plugins do
@@ -19,7 +20,6 @@ group :jekyll_plugins do
   gem 'jekyll-sort'
   gem 'jekyll-tagging'
   gem 'kramdown'
-  gem 'talk_like_a_pirate', ">= 0.2.2"
 end
 
 # Debugging:
