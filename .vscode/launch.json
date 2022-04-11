@@ -5,6 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug nokogiri_test",
+      "program": "${workspaceRoot}/spec/nokogiri_test.rb",
+      "type": "Ruby",
+      "request": "launch",
+    },
+    {
       "args": ["/tmp/jekyll_block_tag_plugin_template"],
       "console": "externalTerminal",
       "name": "Debug run_this_first",

@@ -33,11 +33,11 @@ liquid:
   # strict_variables: true
 plugin_loggers:
   PluginMetaLogger: info
-  CleanHook: info
-  DocumentHooks: info
-  MyBlock: info
-  PageHooks: info
-  PostHooks: info
+  CleanHook: warn
+  DocumentHooks: warn
+  MyBlock: warn
+  PageHooks: warn
+  PostHooks: warn
   SiteHooks: warn
 permalink: "/blog/:year/:month/:day/:title:output_ext"
 plugin-vars:

@@ -5,6 +5,8 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in jekyll_plugin_template.gemspec
 gemspec
 
+gem 'talk_like_a_pirate'
+
 gem "bundler", require: false
 gem "rake", require: false
 gem "rspec", require: false
