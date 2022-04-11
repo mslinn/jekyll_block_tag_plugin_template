@@ -24,9 +24,12 @@ module JekyllHookExamples
 
   # Uncomment the following lines, rebuild the plugin and view http://localhost:4444/
   # to see these hooks in action:
+  #
+  # Convert "Jekyll" to "Awesome Jekyll"
   # Jekyll::Hooks.register(:documents, :post_render, &modify_output)
   # Jekyll::Hooks.register(:pages, :post_render, &modify_output)
-
-  Jekyll::Hooks.register(:documents, :post_render, &pirate_translator)
-  Jekyll::Hooks.register(:pages, :post_render, &pirate_translator)
+  #
+  # Convert "English" to "Pirate Talk"
+  # Jekyll::Hooks.register(:documents, :post_render, &pirate_translator)
+  # Jekyll::Hooks.register(:pages, :post_render, &pirate_translator)
 end
