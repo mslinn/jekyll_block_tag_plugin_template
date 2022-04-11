@@ -30,6 +30,6 @@ module JekyllHookExamples
   # Jekyll::Hooks.register(:pages, :post_render, &modify_output)
   #
   # Convert "English" to "Pirate Talk"
-  # Jekyll::Hooks.register(:documents, :post_render, &pirate_translator)
-  # Jekyll::Hooks.register(:pages, :post_render, &pirate_translator)
+  Jekyll::Hooks.register(:documents, :post_render, &pirate_translator)
+  Jekyll::Hooks.register(:pages, :post_render, &pirate_translator)
 end

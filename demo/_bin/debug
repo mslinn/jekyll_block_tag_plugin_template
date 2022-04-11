@@ -19,6 +19,7 @@ GIT_ROOT="$( git rev-parse --show-toplevel )"
 cd "${GIT_ROOT}/demo" || exit
 
 bundle install
+bundle update
 
 bundle exec jekyll clean # Ensure all hooks get called
 
