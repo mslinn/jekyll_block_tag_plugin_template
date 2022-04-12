@@ -2,13 +2,30 @@
 categories: [Jekyll]
 description: Just a draft test post I wrote
 date: 2022-03-28
-last_modified_at: 2022-04-1
+last_modified_at: 2022-04-12
 layout: default
+front_matter_variable: Provided in front matter
 title: Test Draft Post
 ---
 <h2>Hello, World!</h2>
 
 <h3>The Future Is So Bright</h3>
 <p>
-  I have to wear sunglasses at night.
+  Plugins <b>may</b> receive variables as arguments, if they are enclosed in double curly braces.
 </p>
+
+{% assign assigned_page_variable = "assigned to a page variable" %}
+
+{% block_tag_template param1="provided as string to plugin"
+                      param2='{{assigned_page_variable}}'
+                      param3="{{front_matter_variable}}"
+                      param4='{{page.last_modified_at}}'
+                      param5='{{layout.compress}}' %}
+  This is the block_tag_template content.
+  {{front_matter_variable}}
+{% endblock_tag_template %}
+
+<p>
+  Includes may receive variables as arguments, but they must not be enclosed in double curly braces:
+</p>
+{% include block_tag_template_wrapper param2=assigned_variable param3=front_matter_variable %}

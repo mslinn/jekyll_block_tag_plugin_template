@@ -30,20 +30,30 @@ module JekyllTagPlugin
     # @param _parse_context [Liquid::ParseContext] Liquid variables name/value pairs accessible in the calling page
     #        See https://www.rubydoc.info/gems/liquid/Liquid/ParseContext
     # @return [void]
-    def initialize(tag_name, argument_string, _parse_context)
+    def initialize(tag_name, argument_string, parse_context) # rubocop:disable Metrics/MethodLength
       super
       @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
+      @argument_string = argument_string
+
       argv = Shellwords.split(argument_string) # Scans name/value arguments
       params = KeyValueParser.new.parse(argv) # Extracts key/value pairs, default value for non-existant keys is nil
-      @param1 = params[:param1] # Example of obtaining the value of parameter param1
+      @param1 = params[:param1] # Obtain the value of parameter param1
+      @param2 = params[:param2]
+      @param3 = params[:param3]
+      @param4 = params[:param4]
+      @param5 = params[:param5]
       @param_x = params[:not_present] # The value of parameters that are present is nil, but displays as the empty string
 
-      @logger.debug do
+      @logger.info do
         <<~HEREDOC
           tag_name = '#{tag_name}'
           argument_string = '#{argument_string}'
           @param1 = '#{@param1}'
+          @param2 = '#{@param2}'
+          @param3 = '#{@param3}'
+          @param4 = '#{@param4}'
+          @param5 = '#{@param5}'
           @param_x = '#{@param_x}'
           params =
             #{params.map { |k, v| "#{k} = #{v}" }.join("\n  ")}
@@ -52,22 +62,32 @@ module JekyllTagPlugin
     end
 
     # Method prescribed by the Jekyll plugin lifecycle.
+    # @param context[Liquid::Context]
     # @return [String]
-    def render(context)
+    def render(liquid_context)
       content = super # This underdocumented assignment returns the text within the block.
 
-      @site = context.registers[:site]
+      @site = liquid_context.registers[:site]
       @config = @site.config
-      @mode = @config["env"]["JEKYLL_ENV"]
-      @page = context.registers[:page]
+      @mode = @config["env"]["JEKYLL_ENV"] || "development"
 
-      @logger.debug {
+      _assigned_page_variable = liquid_context['assigned_page_variable'] # variables defined in pages are stored as hash values in liquid_context
+      @page = liquid_context.registers[:page] # names of front matter variables become hash keys for @page
+
+      @envs = liquid_context.environments.first
+      @layout_hash = @envs['layout']
+
+      @logger.info do
         <<~HEREDOC
+          liquid_context.scopes=#{liquid_context.scopes}
           mode="#{@mode}"
+          page attributes:
+            #{@page.sort
+                   .reject { |k, _| ["content", "next"].include? k }
+                   .map { |k, v| "#{k}=#{v}" }
+                   .join("\n  ")}
         HEREDOC
-        #   page.path="#{@page.path}"
-        #   page.url="#{@page.url}"
-      }
+      end
 
       # Compute the return value of this Jekyll tag
       <<~HEREDOC
@@ -76,8 +96,6 @@ module JekyllTagPlugin
         </p>
       HEREDOC
     end
-
-    private # Your private methods go here
   end
 end
 

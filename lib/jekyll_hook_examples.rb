@@ -14,11 +14,14 @@ module JekyllHookExamples
 
   def pirate_translator
     proc do |webpage|
-      html = Nokogiri.HTML(webpage.output)
-      html.css("p").each do |node|
-        node.content = TalkLikeAPirate.translate(node.content)
+      pirate_talk = webpage.data['pirate_talk']
+      if pirate_talk
+        html = Nokogiri.HTML(webpage.output)
+        html.css("p").each do |node|
+          node.content = TalkLikeAPirate.translate(node.content)
+        end
+        webpage.output = html
       end
-      webpage.output = html
     end
   end
 
