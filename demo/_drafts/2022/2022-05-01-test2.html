@@ -14,10 +14,10 @@ title: Test Draft Post
   Plugins <b>may</b> receive variables as arguments, if they are enclosed in double curly braces.
 </p>
 
-{% assign assigned_page_variable = "assigned to a page variable" %}
+{% assign page_variable = "assigned to a page variable" %}
 
 {% block_tag_template param1="provided as string to plugin"
-                      param2='{{assigned_page_variable}}'
+                      param2='{{page_variable}}'
                       param3="{{front_matter_variable}}"
                       param4='{{page.last_modified_at}}'
                       param5='{{layout.compress}}' %}
@@ -28,4 +28,4 @@ title: Test Draft Post
 <p>
   Includes may receive variables as arguments, but they must not be enclosed in double curly braces:
 </p>
-{% include block_tag_template_wrapper param2=assigned_variable param3=front_matter_variable %}
+{% include block_tag_template_wrapper param2=page_variable param3=front_matter_variable %}
