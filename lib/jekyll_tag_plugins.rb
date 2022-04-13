@@ -25,10 +25,14 @@ end
 module JekyllTagPlugin
   # This class implements the Jekyll tag functionality
   class MyBlock < Liquid::Block
+    # See https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers#create-your-own-tags
     # @param tag_name [String] the name of the tag, which we already know.
     # @param argument_string [String] the arguments from the tag, as a single string.
-    # @param _parse_context [Liquid::ParseContext] Liquid variables name/value pairs accessible in the calling page
-    #        See https://www.rubydoc.info/gems/liquid/Liquid/ParseContext
+    # @param _parse_context [Liquid::ParseContext] hash that stores Liquid options.
+    #        By default it has two keys: :locale and :line_numbers, the first is a Liquid::I18n object, and the second,
+    #        a boolean parameter that determines if error messages should display the line number the error occurred.
+    #        This argument is used mostly to display localized error messages on Liquid built-in Tags and Filters.
+    #        See https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers#create-your-own-tags
     # @return [void]
     def initialize(tag_name, argument_string, parse_context) # rubocop:disable Metrics/MethodLength
       super
@@ -71,8 +75,12 @@ module JekyllTagPlugin
       @config = @site.config
       @mode = @config["env"]["JEKYLL_ENV"] || "development"
 
-      _assigned_page_variable = liquid_context['assigned_page_variable'] # variables defined in pages are stored as hash values in liquid_context
-      @page = liquid_context.registers[:page] # names of front matter variables become hash keys for @page
+      # variables defined in pages are stored as hash values in liquid_context
+      _assigned_page_variable = liquid_context['assigned_page_variable']
+
+      # The names of front matter variables are hash keys for @page
+      @page = liquid_context.registers[:page] # @page is a Jekyll::Drops::DocumentDrop
+      layout = @page['layout']
 
       @envs = liquid_context.environments.first
       @layout_hash = @envs['layout']
