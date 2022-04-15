@@ -22,8 +22,8 @@ end
 # plugin_loggers:
 #   MyBlock: debug
 
-module JekyllTagPlugin
-  # This class implements the Jekyll tag functionality
+module JekyllBlockTagPlugin
+  # This class implements the Jekyll block tag functionality
   class MyBlock < Liquid::Block
     # See https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers#create-your-own-tags
     # @param tag_name [String] the name of the tag, which we already know.
@@ -49,7 +49,7 @@ module JekyllTagPlugin
       @param5 = params[:param5]
       @param_x = params[:not_present] # The value of parameters that are present is nil, but displays as the empty string
 
-      @logger.info do
+      @logger.debug do
         <<~HEREDOC
           tag_name = '#{tag_name}'
           argument_string = '#{argument_string}'
@@ -65,8 +65,10 @@ module JekyllTagPlugin
       end
     end
 
+    REJECTED_ATTRIBUTES = %w("content excerpt next previous").freeze
+
     # Method prescribed by the Jekyll plugin lifecycle.
-    # @param context[Liquid::Context]
+    # @param liquid_context [Liquid::Context]
     # @return [String]
     def render(liquid_context)
       content = super # This underdocumented assignment returns the text within the block.
@@ -80,18 +82,18 @@ module JekyllTagPlugin
 
       # The names of front matter variables are hash keys for @page
       @page = liquid_context.registers[:page] # @page is a Jekyll::Drops::DocumentDrop
-      layout = @page['layout']
+      # layout = @page['layout']
 
       @envs = liquid_context.environments.first
       @layout_hash = @envs['layout']
 
-      @logger.info do
+      @logger.debug do
         <<~HEREDOC
           liquid_context.scopes=#{liquid_context.scopes}
           mode="#{@mode}"
           page attributes:
             #{@page.sort
-                   .reject { |k, _| ["content", "next"].include? k }
+                   .reject { |k, _| REJECTED_ATTRIBUTES.include? k }
                    .map { |k, v| "#{k}=#{v}" }
                    .join("\n  ")}
         HEREDOC
@@ -108,4 +110,4 @@ module JekyllTagPlugin
 end
 
 PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllPluginTemplateVersion::VERSION} plugin." }
-Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, JekyllTagPlugin::MyBlock)
+Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, JekyllBlockTagPlugin::MyBlock)
