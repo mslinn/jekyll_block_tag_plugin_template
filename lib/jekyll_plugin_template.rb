@@ -11,6 +11,7 @@ require_relative "jekyll_tag_plugin"
 module JekyllPluginTemplate
   include JekyllPluginHooks
   include JekyllHookExamples
+  include JekyllGeneneratorPlugin
   include JekyllBlockTagPlugin
   include JekyllTagPlugin
 end

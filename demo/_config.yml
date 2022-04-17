@@ -35,7 +35,7 @@ plugin_loggers:
   PluginMetaLogger: info
   CleanHook: warn
   DocumentHooks: warn
-  MyBlock: debug
+  MyBlock: warn
   PageHooks: warn
   PostHooks: warn
   SiteHooks: warn

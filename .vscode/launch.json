@@ -5,16 +5,39 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug nokogiri_test",
-      "program": "${workspaceRoot}/spec/nokogiri_test.rb",
+      "cwd": "${workspaceRoot}",
+      "name": "Listen for rdebug-ide",
       "type": "Ruby",
-      "request": "launch",
+      "request": "attach",
+      "remoteHost": "127.0.0.1",
+      "remotePort": "1234",
+      "remoteWorkspaceRoot": "${workspaceRoot}"
+    },
+    {
+      "cwd": "${workspaceRoot}",
+      "name": "Debug Demo",
+      // "postLaunchTask": "Stop rdebug-ide", # Not sure how to do this
+      // "preLaunchTask": "Debug demo",
+      "request": "attach",
+      "remoteHost": "localhost",
+      "remotePort": "1234",
+      "remoteWorkspaceRoot": "/",
+      "restart": true,
+      "showDebuggerOutput": true,
+      "stopOnEntry": true,
+      "type": "Ruby",
     },
     {
       "args": ["/tmp/jekyll_block_tag_plugin_template"],
       "console": "externalTerminal",
       "name": "Debug run_this_first",
       "program": "${workspaceRoot}/bin/run_this_first",
+      "type": "Ruby",
+      "request": "launch",
+    },
+    {
+      "name": "Debug nokogiri_test",
+      "program": "${workspaceRoot}/spec/nokogiri_test.rb",
       "type": "Ruby",
       "request": "launch",
     },

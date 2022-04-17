@@ -1,0 +1,68 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "command": "./demo/_bin/debug",
+      "detail": "This task launches rdebug-ide, but unfortunately does not recognize when rdebug-ide launched",
+      "isBackground": true,
+      "label": "Debug demo",
+      "presentation": {
+        "clear": true,
+        "echo": true,
+        "focus": false,
+        "panel": "new",
+        "reveal": "always",
+        "showReuseMessage": false,
+      },
+
+      // See https://stackoverflow.com/q/44242048/553865
+      "problemMatcher": {
+        "fileLocation": "autoDetect",
+        "owner": "custom",
+        "pattern": { "regexp": "." },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".", // "^Fast Debugger",
+          "endsPattern": ".",
+        }
+      },
+      "runOptions":{
+        "instanceLimit": 1
+      },
+      "type": "shell",
+    },
+    {
+      "command": "demo/_bin/bogusDebug",
+      "isBackground": true,
+      "label": "Bogus Fast Debugger",
+      "presentation": {
+        "clear": true,
+        "echo": true,
+        "focus": false,
+        "panel": "new",
+        "reveal": "always",
+        "showReuseMessage": false,
+      },
+      "problemMatcher": {
+        "fileLocation": "autoDetect",
+        "owner": "custom",
+        "pattern": {
+          "regexp": ".",
+          "file": 1,
+          "line": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^Fast Debugger",
+          "endsPattern": ".",
+        },
+      },
+      "runOptions":{
+        "instanceLimit": 1
+      },
+    }
+  ]
+}

@@ -73,7 +73,13 @@ module JekyllPluginHooks
     Dumpers.dump_payload(@log_site, "Jekyll::Hooks.register(:site, :pre_render)", payload)
   end
 
-  # Called after rendering the whole site, but before writing any files
+  # Called after rendering the whole site, but before writing any files.
+  # Functionally, this hook is exactly the same as a Jekyll generator.
+  # This hook is also similar to invoking the same method on the :post_render hooks for :documents and :pages:
+  #   Jekyll::Hooks.register(:documents, :post_render, &my_method)
+  #   Jekyll::Hooks.register(:pages, :post_render, &my_method)
+  # ... with the difference that this hook will be called only once, for the entire site, so you will have to iterate over all of the :documents and :pages,
+  # whereas the :pages and :documents hooks are called once for each page and document.
   # @param payload [Hash] contains final values of variables after rendering the entire site (useful for sitemaps, feeds, etc).
   Jekyll::Hooks.register(:site, :post_render, :priority => :normal) do |site, payload|
     @log_site.info { "Jekyll::Hooks.register(:site, :post_render) invoked." }
