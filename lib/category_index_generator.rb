@@ -23,7 +23,7 @@ module CategoryIndexGenerator
         site.pages << new_page
         index.content += "<a href='#{category}.html'>#{category}</a><br>\n"
       end
-      index.content += "<\p>"
+      index.content += "</p>"
       site.pages << index
     end
     # rubocop:enable Style/StringConcatenation, Metrics/AbcSize
