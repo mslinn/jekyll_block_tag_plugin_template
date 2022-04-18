@@ -34,7 +34,7 @@ module JekyllBlockTagPlugin
     #        This argument is used mostly to display localized error messages on Liquid built-in Tags and Filters.
     #        See https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers#create-your-own-tags
     # @return [void]
-    def initialize(tag_name, argument_string, parse_context) # rubocop:disable Metrics/MethodLength
+    def initialize(tag_name, argument_string, parse_context) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       super
       @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
@@ -70,12 +70,12 @@ module JekyllBlockTagPlugin
     # Method prescribed by the Jekyll plugin lifecycle.
     # @param liquid_context [Liquid::Context]
     # @return [String]
-    def render(liquid_context)
+    def render(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       content = super # This underdocumented assignment returns the text within the block.
 
       @site = liquid_context.registers[:site]
       @config = @site.config
-      @mode = @config["env"]["JEKYLL_ENV"] || "development"
+      @mode = @config.dig("env", "JEKYLL_ENV") || "development"
 
       # variables defined in pages are stored as hash values in liquid_context
       _assigned_page_variable = liquid_context['assigned_page_variable']

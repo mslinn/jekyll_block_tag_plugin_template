@@ -16,25 +16,28 @@ end
 # plugin_loggers:
 #   JekyllPluginHooks: debug
 #
-# Jekyll::Hooks.register accepts two optional parameters:
+# Jekyll::Hooks.register accepts an optional parameter:
 #   :priority determines the load order for the hook plugins.
 #     Valid values are: :lowest, :low, :normal, :high, and :highest.
 #     Highest priority matches are applied first, lowest priority are applied last.
 #     The defaul value is :normal
-#   :safe is a boolean flag that informs Jekyll if this plugin may be safely executed in an environment
-#     where arbitrary code execution is not allowed. This is used by GitHub Pages to determine which
-#     core plugins may be used, and which are unsafe to run. If your plugin does not allow for arbitrary
-#     code execution, set this to true. GitHub Pages still will not load your plugin, but if you submit it
-#     for inclusion in core, it is best for this to be correct!
-#     Default value is false.
-module JekyllPluginHooks
+#
+# Each hook, except the clean hook, can set a boolean flag, called `site.safe`, that informs Jekyll if this plugin may be safely executed in an environment
+# where arbitrary code execution is not allowed. This is used by GitHub Pages to determine which
+# core plugins may be used, and which are unsafe to run. If your plugin does not allow for arbitrary
+# code execution, set this to true. GitHub Pages still will not load your plugin, but if you submit it
+# for inclusion in core, it is best for this to be correct!
+# Default value is false.
+# The hooks for pages, posts and documents access safe via pages.site.safe, posts.site.safe and documents.site.safe, respectively.
+module JekyllPluginHooks # rubocop:disable Metrics/ModuleLength
   ########## :site hooks
   # These hooks influence the entire site
 
   # This hook is called just after the site initializes.
   # It is a good place to modify the configuration of the site.
   # This hook is triggered once per build / serve session.
-  Jekyll::Hooks.register(:site, :after_init, :priority => :normal) do |site|
+  Jekyll::Hooks.register(:site, :after_init, priority: :normal) do |site|
+    site.safe = true
     @log_site.info { "Loaded #{JekyllPluginHooksName::PLUGIN_NAME} v#{JekyllPluginTemplate::VERSION} plugin." }
     @log_site.info { "Jekyll::Hooks.register(:site, :after_init) invoked." }
     Dumpers.dump_site(@log_site, "Jekyll::Hooks.register(:site, :after_init)", site)
@@ -42,7 +45,8 @@ module JekyllPluginHooks
 
   # Called just after the site resets during regeneration
   # This is the first hook called, so this is the best place to define loggers
-  Jekyll::Hooks.register(:site, :after_reset, :priority => :normal) do |site|
+  Jekyll::Hooks.register(:site, :after_reset, priority: :normal) do |site|
+    site.safe = true
     @log_clean = PluginMetaLogger.instance.new_logger(:CleanHook,     PluginMetaLogger.instance.config)
     @log_docs  = PluginMetaLogger.instance.new_logger(:DocumentHooks, PluginMetaLogger.instance.config)
     @log_pages = PluginMetaLogger.instance.new_logger(:PageHooks,     PluginMetaLogger.instance.config)
@@ -55,7 +59,8 @@ module JekyllPluginHooks
   # Called after all source files have been read and loaded from disk.
   # This is a good hook for enriching posts;
   # for example, adding links to author pages or adding posts to author pages.
-  Jekyll::Hooks.register(:site, :post_read, :priority => :normal) do |site|
+  Jekyll::Hooks.register(:site, :post_read, priority: :normal) do |site|
+    site.safe = true
     @log_site.info { "Jekyll::Hooks.register(:site, :post_read) invoked." }
     Dumpers.dump_site(@log_site, "Jekyll::Hooks.register(:site, :post_read)", site)
   end
@@ -66,7 +71,8 @@ module JekyllPluginHooks
   # because it is derived from site['env']['JEKYLL_ENV']
   # @param payload [Hash] according to the docs, payload is a hash containing the variables available during rendering; the hash can be modified here.
   # However, the debugger shows payload has type Jekyll::UnifiedPayloadDrop
-  Jekyll::Hooks.register(:site, :pre_render, :priority => :normal) do |site, payload|
+  Jekyll::Hooks.register(:site, :pre_render, priority: :normal) do |site, payload|
+    site.safe = true
     @log_site.info { "Jekyll::Hooks.register(:site, :pre_render) invoked." }
     @log_site.debug { dump(":site, :pre_render payload", payload) }
     Dumpers.dump_site(@log_site, "Jekyll::Hooks.register(:site, :pre_render)", site)
@@ -81,7 +87,8 @@ module JekyllPluginHooks
   # ... with the difference that this hook will be called only once, for the entire site, so you will have to iterate over all of the :documents and :pages,
   # whereas the :pages and :documents hooks are called once for each page and document.
   # @param payload [Hash] contains final values of variables after rendering the entire site (useful for sitemaps, feeds, etc).
-  Jekyll::Hooks.register(:site, :post_render, :priority => :normal) do |site, payload|
+  Jekyll::Hooks.register(:site, :post_render, priority: :normal) do |site, payload|
+    site.safe = true
     @log_site.info { "Jekyll::Hooks.register(:site, :post_render) invoked." }
     @log_site.debug { dump(":site, :post_render payload", payload) }
     Dumpers.dump_site(@log_site, "Jekyll::Hooks.register(:site, :post_render)", site)
@@ -89,7 +96,8 @@ module JekyllPluginHooks
   end
 
   # Called after writing all of the rendered files to disk
-  Jekyll::Hooks.register(:site, :post_write, :priority => :normal) do |site|
+  Jekyll::Hooks.register(:site, :post_write, priority: :normal) do |site|
+    site.safe = true
     @log_site.info { "Jekyll::Hooks.register(:site, :post_write) invoked." }
     Dumpers.dump_site(@log_site, "Jekyll::Hooks.register(:site, :post_write)", site)
   end
@@ -99,32 +107,37 @@ module JekyllPluginHooks
   # These hooks provide fine-grained control over all pages in the site.
 
   # Called whenever a page is initialized
-  Jekyll::Hooks.register(:pages, :post_init, :priority => :normal) do |page|
+  Jekyll::Hooks.register(:pages, :post_init, priority: :normal) do |page|
+    page.site.safe = true
     @log_pages.info { "Jekyll::Hooks.register(:pages, :post_init) invoked." }
     Dumpers.dump_page(@log_pages, "Jekyll::Hooks.register(:pages, :post_init)", page)
   end
 
   # Called just before rendering a page
-  Jekyll::Hooks.register(:pages, :pre_render, :priority => :normal) do |page, payload|
+  Jekyll::Hooks.register(:pages, :pre_render, priority: :normal) do |page, payload|
+    page.site.safe = true
     @log_pages.info { "Jekyll::Hooks.register(:pages, :pre_render) invoked." }
     Dumpers.dump_page(@log_pages, "Jekyll::Hooks.register(:pages, :pre_render)", page)
     Dumpers.dump_payload(@log_pages, ":pages, :pre_render payload", payload)
   end
 
   # Called after converting the page content, but before rendering the page layout
-  Jekyll::Hooks.register(:pages, :post_convert, :priority => :normal) do |page|
+  Jekyll::Hooks.register(:pages, :post_convert, priority: :normal) do |page|
+    page.site.safe = true
     @log_pages.info { "Jekyll::Hooks.register(:pages, :post_convert) invoked." }
     Dumpers.dump_page(@log_pages, "Jekyll::Hooks.register(:pages, :post_convert)", page)
   end
 
   # Called after rendering a page, but before writing it to disk
-  Jekyll::Hooks.register(:pages, :post_render, :priority => :normal) do |page|
+  Jekyll::Hooks.register(:pages, :post_render, priority: :normal) do |page|
+    page.site.safe = true
     @log_pages.info { "Jekyll::Hooks.register(:pages, :post_render) invoked." }
     Dumpers.dump_page(@log_pages, "Jekyll::Hooks.register(:pages, :post_render)", page)
   end
 
   # Called after writing a page to disk
-  Jekyll::Hooks.register(:pages, :post_write, :priority => :normal) do |page|
+  Jekyll::Hooks.register(:pages, :post_write, priority: :normal) do |page|
+    page.site.safe = true
     @log_pages.info { "Jekyll::Hooks.register(:pages, :post_write) invoked." }
     Dumpers.dump_page(@log_pages, "Jekyll::Hooks.register(:pages, :post_write)", page)
   end
@@ -142,7 +155,8 @@ module JekyllPluginHooks
   # other document attributes that are not yet ready when this hook is invoked include
   # excerpt and ext (file extension).
   # The collection attribute will be set properly for this hook.
-  Jekyll::Hooks.register(:documents, :post_init, :priority => :normal) do |document|
+  Jekyll::Hooks.register(:documents, :post_init, priority: :normal) do |document|
+    document.site.safe = true
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_init) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_init)", document)
     "stop"
@@ -153,7 +167,8 @@ module JekyllPluginHooks
   # Liquid variables are still embedded in the content.
   # If the document contains markdown (or some other markup),
   # it will not have been converted to HTML (or whatever the target format is) yet.
-  Jekyll::Hooks.register(:documents, :pre_render, :priority => :normal) do |document, payload|
+  Jekyll::Hooks.register(:documents, :pre_render, priority: :normal) do |document, payload|
+    document.site.safe = true
     @log_docs.info { "Jekyll::Hooks.register(:documents, :pre_render) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :pre_render)", document)
     Dumpers.dump_payload(@log_docs, ":documents, :pre_render payload", payload)
@@ -161,21 +176,24 @@ module JekyllPluginHooks
 
   # Called after converting the document content to HTML (or whatever),
   # but before rendering the document using the layout.
-  Jekyll::Hooks.register(:documents, :post_convert, :priority => :normal) do |document|
+  Jekyll::Hooks.register(:documents, :post_convert, priority: :normal) do |document|
+    document.site.safe = true
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_convert) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_convert)", document)
   end
 
   # Called after rendering a document using the layout, but before writing it to disk.
   # This is your last chance to modify the content.
-  Jekyll::Hooks.register(:documents, :post_render, :priority => :normal) do |document|
+  Jekyll::Hooks.register(:documents, :post_render, priority: :normal) do |document|
+    document.site.safe = true
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_render) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_render)", document)
   end
 
   # Called after writing a document to disk.
   # Useful for statistics regarding completed renderings.
-  Jekyll::Hooks.register(:documents, :post_write, :priority => :normal) do |document|
+  Jekyll::Hooks.register(:documents, :post_write, priority: :normal) do |document|
+    document.site.safe = true
     @log_docs.info { "Jekyll::Hooks.register(:documents, :post_write) invoked." }
     Dumpers.dump_document(@log_docs, "Jekyll::Hooks.register(:documents, :post_write)", document)
   end
@@ -185,14 +203,16 @@ module JekyllPluginHooks
   # documents in user-defined collections
 
   # Called whenever any post is initialized
-  Jekyll::Hooks.register(:posts, :post_init, :priority => :normal) do |post|
+  Jekyll::Hooks.register(:posts, :post_init, priority: :normal) do |post|
+    post.site.safe = true
     @log_posts.info { "Jekyll::Hooks.register(:posts, :post_init) invoked." }
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :post_init)", post)
   end
 
   # Called just before rendering a post
-  Jekyll::Hooks.register(:posts, :pre_render, :priority => :normal) do |post, payload|
+  Jekyll::Hooks.register(:posts, :pre_render, priority: :normal) do |post, payload|
     # post is a Jekyll::Document
+    post.site.safe = true
     @log_posts.info { "Jekyll::Hooks.register(:posts, :pre_render) invoked." }
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :pre_render)", post)
     Dumpers.dump_payload(@log_posts, ":posts, :pre_render payload", payload)
@@ -206,20 +226,22 @@ module JekyllPluginHooks
   #   Jekyll::Hooks.register(:posts, :post_convert) do |post|
   #     post.output.gsub!('programming PHP', 'banging rocks together')
   #   end
-  Jekyll::Hooks.register(:posts, :post_convert, :priority => :normal) do |post|
+  Jekyll::Hooks.register(:posts, :post_convert, priority: :normal) do |post|
+    post.site.safe = true
     @log_posts.info { "Jekyll::Hooks.register(:posts, :post_convert) invoked." }
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :post_convert)", post)
   end
 
   # Called after rendering a post, but before writing it to disk.
   # Changing `post.conent` has no effect on visible output.
-  Jekyll::Hooks.register(:posts, :post_render, :priority => :normal) do |post|
+  Jekyll::Hooks.register(:posts, :post_render, priority: :normal) do |post|
     @log_posts.info { "Jekyll::Hooks.register(:posts, :post_render) invoked." }
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :post_render)", post)
   end
 
   # Called after writing a post to disk
-  Jekyll::Hooks.register(:posts, :post_write, :priority => :normal) do |post|
+  Jekyll::Hooks.register(:posts, :post_write, priority: :normal) do |post|
+    post.site.safe = true
     @log_posts.info { "Jekyll::Hooks.register(:posts, :post_write) invoked." }
     Dumpers.dump_document(@log_posts, "Jekyll::Hooks.register(:posts, :post_write)", post)
   end
@@ -229,7 +251,7 @@ module JekyllPluginHooks
   # to be deleted during the site's cleanup phase.
 
   # Called during the cleanup of a site's destination, before the site is built
-  Jekyll::Hooks.register(:clean, :on_obsolete, :priority => :normal) do |files|
+  Jekyll::Hooks.register(:clean, :on_obsolete, priority: :normal) do |files|
     # files is an array of String
     @log_clean.info { "Jekyll::Hooks.register(:clean, :on_obsolete) invoked for #{files}." }
   end

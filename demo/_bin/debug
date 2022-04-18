@@ -24,11 +24,11 @@ bundle update
 bundle exec jekyll clean # Ensure all hooks get called
 
 if [ "$1" == -r ]; then
-  bundle exec jekyll $run
+  ../exe/jekyll $run
 else
   bundle exec rdebug-ide \
     --host 0.0.0.0 \
     --port 1234 \
     --dispatcher-port 26162 \
-    -- /usr/local/bin/jekyll $run
+    -- ../exe/jekyll $run
 fi
