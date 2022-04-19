@@ -6,7 +6,7 @@ module CategoryIndexGenerator
   class CategoryGenerator < Jekyll::Generator
     safe false
 
-    # rubocop:disable Style/StringConcatenation, Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:disable Style/StringConcatenation, Metrics/AbcSize
     def generate(site)
       index = Jekyll::PageWithoutAFile.new(site, site.source, 'categories', "index.html")
       index.data['layout'] = "default"
