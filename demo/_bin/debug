@@ -24,7 +24,7 @@ bundle update
 bundle exec jekyll clean # Ensure all hooks get called
 
 if [ "$1" == -r ]; then
-  ../exe/jekyll $run
+  bundle exec ../exe/jekyll $run
 else
   bundle exec rdebug-ide \
     --host 0.0.0.0 \

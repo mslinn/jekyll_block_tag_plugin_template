@@ -46,7 +46,7 @@ module JekyllPluginHooks # rubocop:disable Metrics/ModuleLength
   # Called just after the site resets during regeneration
   # This is the first hook called, so this is the best place to define loggers
   Jekyll::Hooks.register(:site, :after_reset, priority: :normal) do |site|
-    site.safe = true
+    # site.safe = true
     @log_clean = PluginMetaLogger.instance.new_logger(:CleanHook,     PluginMetaLogger.instance.config)
     @log_docs  = PluginMetaLogger.instance.new_logger(:DocumentHooks, PluginMetaLogger.instance.config)
     @log_pages = PluginMetaLogger.instance.new_logger(:PageHooks,     PluginMetaLogger.instance.config)
@@ -252,7 +252,7 @@ module JekyllPluginHooks # rubocop:disable Metrics/ModuleLength
 
   # Called during the cleanup of a site's destination, before the site is built
   Jekyll::Hooks.register(:clean, :on_obsolete, priority: :normal) do |files|
-    # files is an array of String
+    # files has type Array[String]
     @log_clean.info { "Jekyll::Hooks.register(:clean, :on_obsolete) invoked for #{files}." }
   end
 end
