@@ -4,7 +4,7 @@
 module CategoryIndexGenerator
   # Creates an index page for each catagory, plus a main index, all within a directory called _site/categories.
   class CategoryGenerator < Jekyll::Generator
-    safe false
+    safe true
 
     # rubocop:disable Style/StringConcatenation, Metrics/AbcSize
     def generate(site)
