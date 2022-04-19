@@ -21,3 +21,9 @@ Layout/LineLength:
 
 Style/StringLiterals:
   Enabled: false
+
+Metrics/MethodLength:
+  Max: 40
+
+Metrics/ModuleLength:
+  Enabled: false

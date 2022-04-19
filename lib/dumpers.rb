@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Methods to display Jekyll variable contents
 module Dumpers
   # See https://github.com/jekyll/jekyll/blob/master/lib/jekyll/collection.rb
   #   attr_reader :site, :label, :metadata
@@ -118,7 +119,7 @@ module Dumpers
   #     :unpublished
   #   attr_reader :cache_dir, :config, :dest, :filter_cache, :includes_load_paths,
   #     :liquid_renderer, :profiler, :regenerator, :source
-  def dump_site(logger, msg, site) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+  def dump_site(logger, msg, site) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     logger.info do
       <<~END_INFO
         #{msg} site

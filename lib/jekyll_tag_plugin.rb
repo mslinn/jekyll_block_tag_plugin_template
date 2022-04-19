@@ -61,7 +61,7 @@ module JekyllTagPlugin
     # Several variables are created to illustrate how they are made.
     # @param liquid_context [Liquid::Context]
     # @return [String]
-    def render(liquid_context) # rubocop:disable Metrics/AbcSize
+    def render(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       @site = liquid_context.registers[:site]
       @config = @site.config
       @mode = @config["env"]["JEKYLL_ENV"] || "development"
@@ -91,7 +91,7 @@ module JekyllTagPlugin
       assemble_emoji
     end
 
-    def assemble_emoji
+    def assemble_emoji # rubocop:disable Metrics/MethodLength
       case @emoji_align
       when "inline"
         align = ""

@@ -3,6 +3,7 @@ description: Jekyll plugin template demonstration
 layout: default
 title: Demonstration
 ---
+<h2 id="block_tag">Block Tag</h2>
 <p>
   Given this markup in an HTML file:
 </p>
@@ -16,3 +17,16 @@ Hello, world!
 {% block_tag_template param1="Today is a wonderful day!" %}
 Hello, world!
 {% endblock_tag_template %}
+
+
+<h2 id="filter">Filter</h2>
+<p>
+  Given this markup in an HTML file:
+</p>
+<pre>{% raw %}{{ "joy" | my_filter_template }}{% endraw %}</pre>
+<p>
+  The rendered HTML from the block tag looks like this:
+</p>
+<p>
+  Search for {{ "joy" | my_filter_template }}!
+</p>
