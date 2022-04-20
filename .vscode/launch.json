@@ -63,7 +63,7 @@
       "program": "${workspaceRoot}/exe/rspec",
       "request": "launch",
       "see": "https://relishapp.com/rspec/rspec-core/docs/command-line",
-      "showDebuggerOutput": false,
+      "showDebuggerOutput": true,
       "type": "Ruby",
       "useBundler": true,
     },

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "jekyll_plugin_logger"
+
 # @author Copyright 2020 {https://www.mslinn.com Michael Slinn}
 # Template for Jekyll filters.
 module JekyllFilterTemplate

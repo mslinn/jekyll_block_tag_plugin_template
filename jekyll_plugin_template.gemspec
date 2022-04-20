@@ -2,19 +2,18 @@
 
 require_relative "lib/jekyll_plugin_template/version"
 
-# rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |spec|
   github = "https://github.com/mslinn/jekyll_plugin_template"
 
   spec.authors = ["Firstname Lastname"]
-  spec.bindir = "exe"
+  spec.bindir = "bin"
   spec.description = <<~END_OF_DESC
     Expand on what spec.summary says.
   END_OF_DESC
   spec.email = ["email@email.com"]
+  spec.executables = ['command_template']
 
   # Specify which files should be added to the gem when it is released.
-  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir[".rubocop.yml", "LICENSE.*", "Rakefile", "{lib,spec}/**/*", "*.gemspec", "*.md"]
 
   spec.homepage = "https://www.mslinn.com/blog/2020/12/30/jekyll-plugin-template-collection.html"
@@ -43,9 +42,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-prompt"
 
   spec.add_development_dependency "debase"
-  # spec.add_development_dependency "rubocop-jekyll"
-  # spec.add_development_dependency "rubocop-rake"
-  # spec.add_development_dependency "rubocop-rspec"
   spec.add_development_dependency "ruby-debug-ide"
 end
-# rubocop:enable Metrics/BlockLength

@@ -65,7 +65,7 @@ module JekyllBlockTagPlugin
       end
     end
 
-    REJECTED_ATTRIBUTES = %w("content excerpt next previous").freeze
+    REJECTED_ATTRIBUTES = %w[content excerpt next previous].freeze
 
     # Method prescribed by the Jekyll plugin lifecycle.
     # @param liquid_context [Liquid::Context]

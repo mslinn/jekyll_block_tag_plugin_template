@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+require "jekyll"
+require "jekyll_plugin_logger"
+require_relative "../lib/command_template"
+
+# I hope this works
+module Jekyll
+  CommandTemplate.new
+
+  # PluginMetaLogger.instance.info { "Loaded #{self.class.name} v#{JekyllPluginTemplateVersion::VERSION} plugin." }
+end
