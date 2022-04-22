@@ -20,7 +20,7 @@ end
 #   :priority determines the load order for the hook plugins.
 #     Valid values are: :lowest, :low, :normal, :high, and :highest.
 #     Highest priority matches are applied first, lowest priority are applied last.
-#     The defaul value is :normal
+#     The default value is :normal
 #
 # Each hook, except the clean hook, can set a boolean flag, called `site.safe`, that informs Jekyll if this plugin may be safely executed in an environment
 # where arbitrary code execution is not allowed. This is used by GitHub Pages to determine which
@@ -83,8 +83,8 @@ module JekyllPluginHooks
   # This hook is also similar to invoking the same method on the :post_render hooks for :documents and :pages:
   #   Jekyll::Hooks.register(:documents, :post_render, &my_method)
   #   Jekyll::Hooks.register(:pages, :post_render, &my_method)
-  # ... with the difference that this hook will be called only once, for the entire site, so you will have to iterate over all of the :documents and :pages,
-  # whereas the :pages and :documents hooks are called once for each page and document.
+  # ... with the difference that this hook will be called only once, for the entire site, so you will have to iterate over all of the
+  # :documents and :pages, whereas the :pages and :documents hooks are called once for each page and document.
   # @param payload [Hash] contains final values of variables after rendering the entire site (useful for sitemaps, feeds, etc).
   Jekyll::Hooks.register(:site, :post_render, priority: :normal) do |site, payload|
     @log_site.info { "Jekyll::Hooks.register(:site, :post_render) invoked." }

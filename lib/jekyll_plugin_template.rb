@@ -9,6 +9,7 @@ require_relative "jekyll_tag_plugin"
 require_relative "jekyll_hooks"
 require_relative "jekyll_hook_examples"
 require_relative "category_index_generator"
+require_relative "category_combiner"
 
 module JekyllPluginTemplate
   include JekyllBlockTagPlugin
@@ -17,4 +18,5 @@ module JekyllPluginTemplate
   include JekyllPluginHooks
   include JekyllHookExamples
   include CategoryIndexGenerator
+  include CategoryCombiner
 end
