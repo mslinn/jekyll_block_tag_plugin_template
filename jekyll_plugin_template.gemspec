@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
     Expand on what spec.summary says.
   END_OF_DESC
   spec.email = ["email@email.com"]
-  spec.executables = ['command_template']
+  spec.executables = []
 
   # Specify which files should be added to the gem when it is released.
   spec.files = Dir[".rubocop.yml", "LICENSE.*", "Rakefile", "{lib,spec}/**/*", "*.gemspec", "*.md"]

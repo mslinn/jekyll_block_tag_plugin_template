@@ -19,6 +19,7 @@
 Notepad++/
 __MACOSX
 out/
+exe/
 pkg/
 project/
 spec/status_persistence.txt
