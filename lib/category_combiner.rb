@@ -17,5 +17,5 @@ module CategoryCombiner
 
   Jekyll::Hooks.register(:site, :post_render, &combine)
 
-  PluginMetaLogger.instance.logger.info { "Loaded CategoryGenerator v#{JekyllPluginTemplateVersion::VERSION} plugin." }
+  PluginMetaLogger.instance.logger.info { "Loaded CategoryCombiner v#{JekyllPluginTemplateVersion::VERSION} plugin." }
 end

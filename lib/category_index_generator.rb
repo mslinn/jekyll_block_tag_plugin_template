@@ -6,8 +6,11 @@ module CategoryIndexGenerator
   class CategoryGenerator < Jekyll::Generator
     safe true
 
+    # Only generates content in development mode
     # rubocop:disable Style/StringConcatenation, Metrics/AbcSize
     def generate(site)
+      return if site.config['env']['JEKYLL_ENV'] == "production"
+
       index = Jekyll::PageWithoutAFile.new(site, site.source, 'categories', "index.html")
       index.data['layout'] = "default"
       index.data['title'] = "Post Categories"
