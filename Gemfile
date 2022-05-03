@@ -8,6 +8,7 @@ gemspec
 gem 'talk_like_a_pirate'
 
 gem "bundler", require: false
+gem "ruby-debug-ide", require: false
 
 # See https://marketplace.visualstudio.com/items?itemName=KoichiSasada.vscode-rdbg
 gem 'debug', require: false

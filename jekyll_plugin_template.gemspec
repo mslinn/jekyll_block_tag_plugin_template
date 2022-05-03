@@ -41,6 +41,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "talk_like_a_pirate", ">= 0.2.2"
   spec.add_dependency "tty-prompt"
 
-  #spec.add_development_dependency "debase"
-  #spec.add_development_dependency "ruby-debug-ide"
+  # spec.add_development_dependency "debase"
+  # spec.add_development_dependency "ruby-debug-ide"
 end
