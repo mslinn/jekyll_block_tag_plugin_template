@@ -9,7 +9,7 @@ module CategoryIndexGenerator
     # Only generates content in development mode
     # rubocop:disable Style/StringConcatenation, Metrics/AbcSize
     def generate(site)
-      # This plugins is disabled unless _config.yml contains an entry for category_generator_enable and the value is not false
+      # This plugin is disabled unless _config.yml contains an entry for category_generator_enable and the value is not false
       return if site.config['category_generator_enable']
 
       return if site.config['env']['JEKYLL_ENV'] == "production"
