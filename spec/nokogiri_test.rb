@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-require "nokogiri"
+require 'nokogiri'
 
 class NokoTest
   webpage = <<~END_PAGE
@@ -16,9 +14,9 @@ class NokoTest
   END_PAGE
 
   html = Nokogiri.HTML(webpage)
-  html.css("p").each do |node|
+  html.css('p').each do |node|
     # This strips any HTML tags from node.content:
-    node.content = node.content.gsub("angry", "happy")
+    node.content = node.content.gsub('angry', 'happy')
   end
   puts "\n\nHTML:\n#{html}"
 end

@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
-require "active_support"
-require "active_support/inflector"
+require 'active_support'
+require 'active_support/inflector'
 require 'confidential_info_redactor'
-require "nokogiri"
-require "talk_like_a_pirate"
+require 'nokogiri'
+require 'talk_like_a_pirate'
 
 # Sample Jekyll Hook plugins
 module JekyllHookExamples
@@ -19,7 +17,7 @@ module JekyllHookExamples
       next unless webpage.data['pirate_talk']
 
       html = Nokogiri.HTML(webpage.output)
-      html.css("p").each do |node|
+      html.css('p').each do |node|
         node.content = TalkLikeAPirate.translate(node.content)
       end
       webpage.output = html
@@ -43,9 +41,9 @@ module JekyllHookExamples
   def redact_all(content)
     tokens = ConfidentialInfoRedactor::Extractor.new.extract(content)
     ConfidentialInfoRedactor::Redactor.new(
-      number_text: wrap(" number"), # This redactor is over-eager
-      date_text: wrap(" date"),
-      token_text: wrap(""),
+      number_text: wrap(' number'), # This redactor is over-eager
+      date_text: wrap(' date'),
+      token_text: wrap(''),
       tokens: tokens
     ).redact(content)
   end
@@ -55,11 +53,11 @@ module JekyllHookExamples
   # Uncomment the following lines, rebuild the plugin and view http://localhost:4444/
   # to see these hooks in action:
   #
-  # Convert "Jekyll" to "Awesome Jekyll"
+  # Convert 'Jekyll' to 'Awesome Jekyll'
   # Jekyll::Hooks.register(:documents, :post_render, &modify_output)
   # Jekyll::Hooks.register(:pages, :post_render, &modify_output)
 
-  # Convert "English" to "Pirate Talk"
+  # Convert 'English' to 'Pirate Talk'
   Jekyll::Hooks.register(:documents, :post_render, &pirate_translator)
   Jekyll::Hooks.register(:pages, :post_render, &pirate_translator)
 

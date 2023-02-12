@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Testing...
 module CategoryCombiner
   # For each catagory, makes a combined page from the collection pages, saves into _site/combined/#{collection.label}.html.

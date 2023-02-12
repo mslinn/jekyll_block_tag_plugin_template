@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Methods to display Jekyll variable contents
 module Dumpers
   # See https://github.com/jekyll/jekyll/blob/master/lib/jekyll/collection.rb
@@ -8,7 +6,7 @@ module Dumpers
   #   Metadata is a hash with at least these keys: output[Boolean], permalink[String]
   #   selected methods: collection_dir, directory, entries, exists?, files, filtered_entries, relative_directory
   def collection_as_string(collection, indent_spaces)
-    indent = " " * indent_spaces
+    indent = ' ' * indent_spaces
     result = <<~END_COLLECTION
       '#{collection.label}' collection within '#{collection.relative_directory}' subdirectory
         #{indent}Directory: #{collection.directory}

@@ -1,11 +1,9 @@
-# frozen_string_literal: true
-
-require "jekyll_plugin_logger"
-require "key_value_parser"
-require "shellwords"
+require 'jekyll_plugin_logger'
+require 'key_value_parser'
+require 'shellwords'
 
 module JekyllPluginTagTemplate
-  PLUGIN_NAME = "tag_template"
+  PLUGIN_NAME = 'tag_template'.freeze
 end
 
 # This Jekyll tag plugin creates an emoji of the desired size and alignment.
@@ -33,7 +31,11 @@ module JekyllTagPlugin
     @@emojis = {
       'angry'      => '&#x1F620;',
       'boom'       => '&#x1F4A5;', # used when requested emoji is not recognized
+      'grin'       => '&#128512;',
+      'horns'      => '&#128520;',
       'kiss'       => '&#x1F619;',
+      'open'       => '&#128515;',
+      'sad'        => '&#128546;',
       'scream'     => '&#x1F631;',
       'smiley'     => '&#x1F601;', # default emoji
       'smirk'      => '&#x1F60F;',
@@ -51,9 +53,9 @@ module JekyllTagPlugin
       argv = Shellwords.split(argument_string) # Scans name/value arguments
       params = KeyValueParser.new.parse(argv) # Extracts key/value pairs, default value for non-existant keys is nil
 
-      @emoji_name  = params[:name]  || "smiley"
-      @emoji_align = params[:align] || "inline" # Could be inline, right or left
-      @emoji_size  = params[:size]  || "3em"
+      @emoji_name  = params[:name]  || 'smiley'
+      @emoji_align = params[:align] || 'inline' # Could be inline, right or left
+      @emoji_size  = params[:size]  || '3em'
       @emoji_hex_code = @@emojis[@emoji_name] || @@emojis['boom']
     end
 
@@ -64,7 +66,7 @@ module JekyllTagPlugin
     def render(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       @site = liquid_context.registers[:site]
       @config = @site.config
-      @mode = @config["env"]["JEKYLL_ENV"] || "development"
+      @mode = @config['env']['JEKYLL_ENV'] || 'development'
 
       # variables defined in pages are stored as hash values in liquid_context
       _assigned_page_variable = liquid_context['assigned_page_variable']
@@ -91,19 +93,19 @@ module JekyllTagPlugin
       assemble_emoji
     end
 
-    def assemble_emoji # rubocop:disable Metrics/MethodLength
+    def assemble_emoji
       case @emoji_align
-      when "inline"
-        align = ""
-      when "right"
-        align = "float: right; margin-left: 5px;"
-      when "left"
-        align = "float: left; margin-right: 5px;"
+      when 'inline'
+        align = ''
+      when 'right'
+        align = 'float: right; margin-left: 5px;'
+      when 'left'
+        align = 'float: left; margin-right: 5px;'
       else
         @logger.error { "Invalid emoji alignment #{@emoji_align}" }
-        align = ""
+        align = ''
       end
-      # Compute the return value of this Jekyll tag
+      # Return the value of this Jekyll tag
       "<span style='font-size: #{@emoji_size}; #{align}'>#{@emoji_hex_code}</span>"
     end
   end

@@ -1,18 +1,16 @@
-# frozen_string_literal: true
-
-require "jekyll_plugin_logger"
-require "key_value_parser"
-require "shellwords"
+require 'jekyll_plugin_logger'
+require 'key_value_parser'
+require 'shellwords'
 
 module JekyllPluginBlockTagTemplate
-  PLUGIN_NAME = "block_tag_template"
+  PLUGIN_NAME = 'block_tag_template'
 end
 
 # This is the module-level description.
 #
 # @example Heading for this example
 #   Describe what this example does
-#   {% block_tag_template "parameter" %}
+#   {% block_tag_template 'parameter' %}
 #     Hello, world!
 #   {% endblock_tag_template %}
 #
@@ -70,12 +68,12 @@ module JekyllBlockTagPlugin
     # Method prescribed by the Jekyll plugin lifecycle.
     # @param liquid_context [Liquid::Context]
     # @return [String]
-    def render(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def render(liquid_context) # rubocop:disable Metrics/AbcSize
       content = super # This underdocumented assignment returns the text within the block.
 
       @site = liquid_context.registers[:site]
       @config = @site.config
-      @mode = @config.dig("env", "JEKYLL_ENV") || "development"
+      @mode = @config.dig('env', 'JEKYLL_ENV') || 'development'
 
       # variables defined in pages are stored as hash values in liquid_context
       _assigned_page_variable = liquid_context['assigned_page_variable']
@@ -101,7 +99,7 @@ module JekyllBlockTagPlugin
 
       # Compute the return value of this Jekyll tag
       <<~HEREDOC
-        <p style="color: green; background-color: yellow; padding: 1em; border: solid thin grey;">
+        <p style='color: green; background-color: yellow; padding: 1em; border: solid thin grey;'>
           #{content} #{@param1}
         </p>
       HEREDOC
