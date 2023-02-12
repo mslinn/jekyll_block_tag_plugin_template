@@ -1,6 +1,4 @@
-require 'jekyll_plugin_logger'
-require 'key_value_parser'
-require 'shellwords'
+require 'jekyll_plugin_support'
 
 module JekyllPluginTagTemplate
   PLUGIN_NAME = 'tag_template'.freeze
@@ -25,7 +23,7 @@ end
 #   MyTag: debug
 module JekyllTagPlugin
   # This class implements the Jekyll tag functionality
-  class MyTag < Liquid::Tag
+  class MyTag < JekyllSupport::JekyllTag
     # Supported emojis (GitHub symbol, hex code) - see https://gist.github.com/rxaviers/7360908 and
     # https://www.quackit.com/character_sets/emoji/emoji_v3.0/unicode_emoji_v3.0_characters_all.cfm
     @@emojis = {
@@ -46,41 +44,21 @@ module JekyllTagPlugin
     # @param argument_string [String] the arguments from the web page.
     # @param tokens [Liquid::ParseContext] tokenized command line
     # @return [void]
-    def initialize(tag_name, argument_string, tokens)
-      super
-      @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
-
-      argv = Shellwords.split(argument_string) # Scans name/value arguments
-      params = KeyValueParser.new.parse(argv) # Extracts key/value pairs, default value for non-existant keys is nil
-
-      @emoji_name  = params[:name]  || 'smiley'
-      @emoji_align = params[:align] || 'inline' # Could be inline, right or left
-      @emoji_size  = params[:size]  || '3em'
+    def render_impl
+      @emoji_name  = @helper.parameter_specified?('name') || 'smiley'
+      @emoji_align = @helper.parameter_specified?('align') || 'inline' # Allowable values are: inline, right or left
+      @emoji_size  = @helper.parameter_specified?('size')  || '3em'
       @emoji_hex_code = @@emojis[@emoji_name] || @@emojis['boom']
-    end
-
-    # Method prescribed by the Jekyll plugin lifecycle.
-    # Several variables are created to illustrate how they are made.
-    # @param liquid_context [Liquid::Context]
-    # @return [String]
-    def render(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-      @site = liquid_context.registers[:site]
-      @config = @site.config
-      @mode = @config['env']['JEKYLL_ENV'] || 'development'
 
       # variables defined in pages are stored as hash values in liquid_context
-      _assigned_page_variable = liquid_context['assigned_page_variable']
+      _assigned_page_variable = @liquid_context['assigned_page_variable']
 
-      # The names of front matter variables are hash keys for @page
-      @page = liquid_context.registers[:page] # @page is a Jekyll::Drops::DocumentDrop
-
-      @envs = liquid_context.environments.first
       @layout_hash = @envs['layout']
       # @layout_hash = @page['layout']
 
       @logger.debug do
         <<~HEREDOC
-          liquid_context.scopes=#{liquid_context.scopes}
+          liquid_context.scopes=#{@liquid_context.scopes}
           mode="#{@mode}"
           page attributes:
             #{@page.sort

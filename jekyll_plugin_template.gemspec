@@ -31,11 +31,11 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'jekyll', '>= 3.5.0'
   spec.add_dependency 'jekyll_plugin_logger'
-  spec.add_dependency 'jekyll_plugin_support'
+  spec.add_dependency 'jekyll_plugin_support', '~> 0.4.0'
   spec.add_dependency 'git'
   spec.add_dependency 'nokogiri'
   spec.add_dependency 'os'
-  spec.add_dependency 'talk_like_a_pirate', '>= 0.2.2'
+  spec.add_dependency 'talk_like_a_pirate', '~> 0.2.2'
   spec.add_dependency 'tty-prompt'
 
   # spec.add_development_dependency 'debase'
