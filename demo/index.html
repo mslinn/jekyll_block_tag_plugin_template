@@ -3,6 +3,39 @@ description: Jekyll plugin template demonstration
 layout: default
 title: Demonstration
 ---
+<h2 id="tag">Tag</h2>
+<style>
+  .emoji_list {
+    columns: 4;
+    list-style-type: none;
+    padding-inline-start: 0;
+  }
+</style>
+<p>
+  Two examples:
+</p>
+<ol>
+  <li>
+    Given this markup in an HTML file:
+    <pre>{% raw %}{% tag_template smile size='3em' %}{% endraw %}</pre>
+    The generated HTML is:
+    {% capture html %}{% tag_template smile size='3em' %}{% endcapture %}
+    <pre>{{ html | escape }}</pre>
+    The rendered HTML from the tag looks like this:
+    {% tag_template smile size='3em' %}
+  </li>
+  <li>
+    Given this markup in an HTML file:
+    <pre>{% raw %}{% tag_template emoji_and_name list size='1em' %}{% endraw %}</pre>
+    The generated HTML is:
+    {% capture html %}{% tag_template emoji_and_name list size='1em' %}{% endcapture %}
+    <pre>{{ html | escape }}</pre>
+    The rendered HTML from the tag looks like this:
+    {% tag_template emoji_and_name list size='1em' %}
+  </li>
+</ol>
+
+
 <h2 id="block_tag">Block Tag</h2>
 <p>
   Given this markup in an HTML file:

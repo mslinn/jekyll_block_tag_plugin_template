@@ -38,23 +38,24 @@ module JekyllTagPlugin
       'smiley'     => '&#x1F601;', # default emoji
       'smirk'      => '&#x1F60F;',
       'two_hearts' => '&#x1F495;',
-    }
+    }.sort_by { |k, v| [k] }.to_h
 
     # @param tag_name [String] is the name of the tag, which we already know.
     # @param argument_string [String] the arguments from the web page.
     # @param tokens [Liquid::ParseContext] tokenized command line
     # @return [void]
     def render_impl
-      @emoji_name  = @helper.parameter_specified?('name') || 'smiley'
-      @emoji_align = @helper.parameter_specified?('align') || 'inline' # Allowable values are: inline, right or left
-      @emoji_size  = @helper.parameter_specified?('size')  || '3em'
-      @emoji_hex_code = @@emojis[@emoji_name] || @@emojis['boom']
+      @emoji_name     = @helper.parameter_specified?('name') || 'smiley'  # Ignored if `list` is specified
+      @emoji_align    = @helper.parameter_specified?('align') || 'inline' # Allowable values are: inline, right or left
+      @emoji_size     = @helper.parameter_specified?('size')  || '3em'
+      @emoji_and_name = @helper.parameter_specified?('emoji_and_name')
+      @list           = @helper.parameter_specified?('list')
+      @emoji_hex_code = @@emojis[@emoji_name] if @emoji_name || @@emojis['boom']
 
       # variables defined in pages are stored as hash values in liquid_context
-      _assigned_page_variable = @liquid_context['assigned_page_variable']
+      # _assigned_page_variable = @liquid_context['assigned_page_variable']
 
-      @layout_hash = @envs['layout']
-      # @layout_hash = @page['layout']
+      @layout_hash = @page['layout']
 
       @logger.debug do
         <<~HEREDOC
@@ -68,23 +69,40 @@ module JekyllTagPlugin
         HEREDOC
       end
 
-      assemble_emoji
+      # Return the value of this Jekyll tag
+      if @list
+        list
+      else
+        assemble_emoji(@emoji_name, @emoji_hex_code)
+      end
     end
 
-    def assemble_emoji
+    private
+
+    def assemble_emoji(emoji_name, emoji_hex_code)
       case @emoji_align
       when 'inline'
         align = ''
       when 'right'
-        align = 'float: right; margin-left: 5px;'
+        align = ' float: right; margin-left: 5px;'
       when 'left'
-        align = 'float: left; margin-right: 5px;'
+        align = ' float: left; margin-right: 5px;'
       else
         @logger.error { "Invalid emoji alignment #{@emoji_align}" }
         align = ''
       end
-      # Return the value of this Jekyll tag
-      "<span style='font-size: #{@emoji_size}; #{align}'>#{@emoji_hex_code}</span>"
+
+      name = " <code>#{emoji_name}</code>" if @emoji_and_name
+
+      "<span style='font-size: #{@emoji_size};#{align}'>#{emoji_hex_code}</span>#{name}"
+    end
+
+    def list
+      "<ul class='emoji_list'>\n" +
+      (@@emojis.map do |ename, hex_code|
+        "  <li>#{ assemble_emoji(ename, hex_code) }</li>\n"
+      end).join +
+      "</ul>\n"
     end
   end
 end
