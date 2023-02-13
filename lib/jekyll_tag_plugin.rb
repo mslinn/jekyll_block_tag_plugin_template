@@ -33,6 +33,7 @@ module JekyllTagPlugin
       'horns'      => '&#128520;',
       'kiss'       => '&#x1F619;',
       'open'       => '&#128515;',
+      'poop'       => '&#x1F4A9;',
       'sad'        => '&#128546;',
       'scream'     => '&#x1F631;',
       'smiley'     => '&#x1F601;', # default emoji
@@ -45,7 +46,7 @@ module JekyllTagPlugin
     # @param tokens [Liquid::ParseContext] tokenized command line
     # @return [void]
     def render_impl
-      @emoji_name     = @helper.parameter_specified?('name') || 'smiley'  # Ignored if `list` is specified
+      @emoji_name     = @helper.parameter_specified?('name')  || 'smiley' # Ignored if `list` is specified
       @emoji_align    = @helper.parameter_specified?('align') || 'inline' # Allowable values are: inline, right or left
       @emoji_size     = @helper.parameter_specified?('size')  || '3em'
       @emoji_and_name = @helper.parameter_specified?('emoji_and_name')
