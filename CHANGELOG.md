@@ -1,3 +1,6 @@
+## 0.2.0 / 2023-02-16
+  * Updated to `jekyll_plugin_support` v0.5.0.
+
 ## 0.1.3 / 2023-02-12
   * Added `grin`, `horns`, `open`, `poop` and `sad` emojis.
   * Now based on [`JekyllSupport::JekyllTag`](https://mslinn.com/jekyll/10200-jekyll-plugin-support.html) instead of `Liquid::Tag`.

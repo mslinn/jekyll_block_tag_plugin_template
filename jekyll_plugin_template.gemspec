@@ -30,8 +30,7 @@ Gem::Specification.new do |spec|
   spec.version = JekyllPluginTemplateVersion::VERSION
 
   spec.add_dependency 'jekyll', '>= 3.5.0'
-  spec.add_dependency 'jekyll_plugin_logger'
-  spec.add_dependency 'jekyll_plugin_support', '~> 0.4.0'
+  spec.add_dependency 'jekyll_plugin_support', '~> 0.5.0'
   spec.add_dependency 'git'
   spec.add_dependency 'nokogiri'
   spec.add_dependency 'os'

@@ -1,6 +1,4 @@
-require 'jekyll_plugin_logger'
-require 'key_value_parser'
-require 'shellwords'
+require 'jekyll_plugin_support'
 
 module JekyllPluginBlockTagTemplate
   PLUGIN_NAME = 'block_tag_template'
@@ -22,7 +20,9 @@ end
 
 module JekyllBlockTagPlugin
   # This class implements the Jekyll block tag functionality
-  class MyBlock < Liquid::Block
+  class MyBlock < JekyllSupport::JekyllBlock
+    include JekyllPluginTemplateVersion
+
     # See https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers#create-your-own-tags
     # @param tag_name [String] the name of the tag, which we already know.
     # @param argument_string [String] the arguments from the tag, as a single string.
@@ -104,8 +104,7 @@ module JekyllBlockTagPlugin
         </p>
       HEREDOC
     end
+
+    JekyllPluginHelper.register(self, JekyllPluginBlockTagTemplate::PLUGIN_NAME)
   end
 end
-
-PluginMetaLogger.instance.info { "Loaded #{JekyllPluginBlockTagTemplate::PLUGIN_NAME} v#{JekyllPluginTemplateVersion::VERSION} plugin." }
-Liquid::Template.register_tag(JekyllPluginBlockTagTemplate::PLUGIN_NAME, JekyllBlockTagPlugin::MyBlock)

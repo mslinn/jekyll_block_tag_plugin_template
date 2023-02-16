@@ -24,6 +24,8 @@ end
 module JekyllTagPlugin
   # This class implements the Jekyll tag functionality
   class MyTag < JekyllSupport::JekyllTag
+    include JekyllPluginTemplateVersion
+
     # Supported emojis (GitHub symbol, hex code) - see https://gist.github.com/rxaviers/7360908 and
     # https://www.quackit.com/character_sets/emoji/emoji_v3.0/unicode_emoji_v3.0_characters_all.cfm
     @@emojis = {
@@ -105,8 +107,7 @@ module JekyllTagPlugin
       end).join +
       "</ul>\n"
     end
+
+    JekyllPluginHelper.register(self, JekyllPluginTagTemplate::PLUGIN_NAME)
   end
 end
-
-PluginMetaLogger.instance.info { "Loaded #{JekyllPluginTagTemplate::PLUGIN_NAME} v#{JekyllPluginTemplateVersion::VERSION} plugin." }
-Liquid::Template.register_tag(JekyllPluginTagTemplate::PLUGIN_NAME, JekyllTagPlugin::MyTag)
