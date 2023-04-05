@@ -1,6 +1,6 @@
 require_relative 'lib/jekyll_plugin_template/version'
 
-Gem::Specification.new do |spec|
+Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   github = 'https://github.com/mslinn/jekyll_plugin_template'
 
   spec.authors = ['Firstname Lastname']
@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   # Specify which files should be added to the gem when it is released.
   spec.files = Dir['.rubocop.yml', 'LICENSE.*', 'Rakefile', '{lib,spec}/**/*', '*.gemspec', '*.md']
 
-  spec.homepage = 'https://www.mslinn.com/blog/2020/12/30/jekyll-plugin-template-collection.html'
+  spec.homepage = 'https://www.mslinn.com/jekyll/10400-jekyll-plugin-template-collection.html'
   spec.license = 'CC0-1.0'
   spec.metadata = {
     'allowed_push_host' => 'https://rubygems.org',
@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.version = JekyllPluginTemplateVersion::VERSION
 
   spec.add_dependency 'jekyll', '>= 3.5.0'
-  spec.add_dependency 'jekyll_plugin_support', '~> 0.5.0'
+  spec.add_dependency 'jekyll_plugin_support', '~> 0.6.0'
   spec.add_dependency 'git'
   spec.add_dependency 'nokogiri'
   spec.add_dependency 'os'

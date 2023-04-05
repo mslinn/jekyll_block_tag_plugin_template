@@ -41,7 +41,7 @@ module JekyllTagPlugin
       'smiley'     => '&#x1F601;', # default emoji
       'smirk'      => '&#x1F60F;',
       'two_hearts' => '&#x1F495;',
-    }.sort_by { |k, v| [k] }.to_h
+    }.sort_by { |k, _v| [k] }.to_h
 
     # @param tag_name [String] is the name of the tag, which we already know.
     # @param argument_string [String] the arguments from the web page.
@@ -101,11 +101,14 @@ module JekyllTagPlugin
     end
 
     def list
-      "<ul class='emoji_list'>\n" +
-      (@@emojis.map do |ename, hex_code|
-        "  <li>#{ assemble_emoji(ename, hex_code) }</li>\n"
-      end).join +
-      "</ul>\n"
+      items = @@emojis.map do |ename, hex_code|
+        "  <li>#{assemble_emoji(ename, hex_code)}</li>"
+      end
+      <<~END_RESULT
+        <ul class='emoji_list'>
+          #{items.join("\n  ")}
+        </ul>
+      END_RESULT
     end
 
     JekyllPluginHelper.register(self, JekyllPluginTagTemplate::PLUGIN_NAME)

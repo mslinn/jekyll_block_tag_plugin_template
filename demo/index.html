@@ -51,6 +51,21 @@ Hello, world!
 Hello, world!
 {% endblock_tag_template %}
 
+<h3 id="block_tag_attribution">With Attribution</h3>
+<p>
+  Given this markup in an HTML file:
+</p>
+<pre>{% raw %}{% block_tag_template attribution param1="Today is a wonderful day!" %}
+  Hello, world!
+{% endblock_tag_template %}{% endraw %}</pre>
+
+<p>
+  The rendered HTML from the block tag looks like this:
+</p>
+{% block_tag_template attribution param1="Today is a wonderful day!" %}
+Hello, world!
+{% endblock_tag_template %}
+
 
 <h2 id="filter">Filter</h2>
 <p>
