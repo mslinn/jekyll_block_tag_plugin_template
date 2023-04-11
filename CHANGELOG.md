@@ -1,3 +1,7 @@
+## 0.3.0 / 2023-04-05
+  * Updated to `jekyll_plugin_support` v0.6.0 for attribution support.
+  * Fixed `jeky_block_tag_plugin.rb` so it works properly with `jekyll_plugin_support`.
+
 ## 0.2.0 / 2023-02-16
   * Updated to `jekyll_plugin_support` v0.5.0.
 
