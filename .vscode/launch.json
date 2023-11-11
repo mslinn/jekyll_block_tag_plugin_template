@@ -5,60 +5,47 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "cwd": "${workspaceRoot}",
-      "name": "Listen for rdebug-ide",
-      "type": "Ruby",
-      "request": "attach",
-      "remoteHost": "127.0.0.1",
-      "remotePort": "1234",
-      "remoteWorkspaceRoot": "${workspaceRoot}"
-    },
-    {
-      "cwd": "${workspaceRoot}",
+      "args": [
+        "serve",
+        "--livereload_port", "35721",
+        "--force_polling",
+        "--host", "0.0.0.0",
+        "--port", "4006",
+        "--future",
+        "--incremental",
+        "--livereload",
+        "--drafts",
+        "--unpublished"
+      ],
+      "cwd": "${workspaceRoot}/demo",
+      "debugPort": "0",
       "name": "Debug Demo",
-      // "postLaunchTask": "Stop rdebug-ide", # Not sure how to do this
-      // "preLaunchTask": "Debug demo",
-      "request": "attach",
-      "remoteHost": "localhost",
-      "remotePort": "1234",
-      "remoteWorkspaceRoot": "/",
-      "showDebuggerOutput": true,
-      "type": "Ruby",
-    },
-    {
-      "args": ["/tmp/jekyll_block_tag_plugin_template"],
-      "name": "Debug run_this_first",
-      "program": "${workspaceRoot}/bin/run_this_first",
-      "type": "Ruby",
       "request": "launch",
+      "script": "${workspaceRoot}/binstub/jekyll",
+      "type": "rdbg",
+      "useBundler": true,
     },
     {
-      "name": "Debug nokogiri_test",
-      "program": "${workspaceRoot}/spec/nokogiri_test.rb",
-      "type": "Ruby",
-      "request": "launch",
-    },
-    {
-      "cwd": "${workspaceRoot}",
-      "name": "Attach rdebug-ide",
+      "debugPort": "0",
+      "name": "Attach rdbg",
       "request": "attach",
-      "remoteHost": "localhost",
-      "remotePort": "1234",
-      "remoteWorkspaceRoot": "/",
-      "showDebuggerOutput": true,
-      "type": "Ruby",
+      "type": "rdbg",
+    },
+    {
+      "name": "Attach with ruby_lsp",
+      "request": "attach",
+      "type": "ruby_lsp",
     },
     {
       "args": [
         "-I",
         "${workspaceRoot}"
       ],
-      "cwd": "${workspaceRoot}",
+      "debugPort": "0",
       "name": "RSpec - all",
-      "program": "${workspaceRoot}/exe/rspec",
       "request": "launch",
-      "showDebuggerOutput": true,
-      "type": "Ruby",
+      "script": "${workspaceRoot}/binstub/rspec",
+      "type": "rdbg",
       "useBundler": true,
     },
     {
@@ -67,13 +54,12 @@
         "${workspaceRoot}",
         "${file}"
       ],
-      "cwd": "${workspaceRoot}",
+      "debugPort": "0",
       "name": "RSpec - active spec file only",
-      "program": "${workspaceRoot}/exe/rspec",
       "request": "launch",
-      "showDebuggerOutput": false,
-      "type": "Ruby",
-      "useBundler": false,
+      "script": "${workspaceRoot}/binstub/rspec",
+      "type": "rdbg",
+      "useBundler": true,
     }
   ]
 }
