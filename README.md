@@ -45,7 +45,7 @@ The customized gem is ready to be pushed to `RubyGems.org`, or any other Ruby ge
      ```
   5) Build the plugins provided with this template.
      ```shell
-     $ rake install:local
+     $ bundle exec rake install
      ```
   6) You can now use your new Jekyll plugins in a Jekyll website.
 
