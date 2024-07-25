@@ -10,7 +10,7 @@ gem 'talk_like_a_pirate', '>= 0.2.2'
 group :jekyll_plugins do
   # gem 'classifier-reborn'
   gem 'html-proofer'
-  gem 'jekyll-assets'
+  gem 'jekyll-assets', git: 'https://github.com/envygeeks/jekyll-assets'
   gem 'jekyll-environment-variables'
   gem 'jekyll_plugin_logger'
   gem 'jekyll_plugin_template', path: '../'
