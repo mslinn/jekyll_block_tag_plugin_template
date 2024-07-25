@@ -1,9 +1,5 @@
 require 'jekyll_plugin_support'
 
-module JekyllPluginTagTemplate
-  PLUGIN_NAME = 'tag_template'.freeze
-end
-
 # This Jekyll tag plugin creates an emoji of the desired size and alignment.
 #
 # @example Float Smiley emoji right, sized 3em
@@ -22,6 +18,8 @@ end
 # plugin_loggers:
 #   MyTag: debug
 module JekyllTagPlugin
+  PLUGIN_NAME = 'tag_template'.freeze
+
   # This class implements the Jekyll tag functionality
   class MyTag < JekyllSupport::JekyllTag
     include JekyllPluginTemplateVersion
@@ -111,6 +109,6 @@ module JekyllTagPlugin
       END_RESULT
     end
 
-    JekyllPluginHelper.register(self, JekyllPluginTagTemplate::PLUGIN_NAME)
+    JekyllSupport::JekyllPluginHelper.register(self, JekyllTagPlugin::PLUGIN_NAME)
   end
 end

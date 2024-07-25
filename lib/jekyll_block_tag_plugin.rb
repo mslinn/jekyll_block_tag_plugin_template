@@ -77,6 +77,6 @@ module JekyllBlockTagPlugin
       exit 3
     end
 
-    JekyllPluginHelper.register(self, JekyllPluginBlockTagTemplate::PLUGIN_NAME)
+    JekyllSupport::JekyllPluginHelper.register(self, JekyllPluginBlockTagTemplate::PLUGIN_NAME)
   end
 end
