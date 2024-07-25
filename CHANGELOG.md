@@ -3,7 +3,7 @@
 
 ## 0.3.1 / 2024-07-24
 
-* Updated to `jekyll_plugin_support` v0.8.7.
+* Updated to `jekyll_plugin_support` v1.0.0.
 
 
 ## 0.3.0 / 2023-04-05
